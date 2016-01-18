@@ -1,4 +1,4 @@
-package assignment2.android.hua.gr.android_er2.DbHelper;
+package assignment2.android.hua.gr.android_er2.database;
 
 
 import android.content.Context;
