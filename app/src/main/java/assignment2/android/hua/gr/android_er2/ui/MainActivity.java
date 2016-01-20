@@ -1,4 +1,4 @@
-package assignment2.android.hua.gr.android_er2;
+package assignment2.android.hua.gr.android_er2.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -6,6 +6,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
+import assignment2.android.hua.gr.android_er2.R;
 
 public class MainActivity extends ActionBarActivity {
 
