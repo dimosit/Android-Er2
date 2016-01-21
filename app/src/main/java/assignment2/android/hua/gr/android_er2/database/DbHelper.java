@@ -24,7 +24,7 @@ public class DbHelper extends SQLiteOpenHelper {
     //Create the database
     private static final String DATABASE_CREATE =
             "CREATE TABLE " + DATABASE_TABLE +
-                    "("+USEID+"INTEGER PRIMARY KEY,"
+                    "("+USEID+"INTEGER PRIMARY KEY AUTOINCREMENT,"
                     +USERNAME+"TEXT NOT NULL,"
                     +CURRENT_LOCATION+"TEXT NOT NULL"+");";
 
