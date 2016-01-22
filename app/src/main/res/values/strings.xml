@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">Android-Er2</string>
     <string name="action_settings">Settings</string>
-    <string name="save_location_button">SAVE LOCATION</string>
+    <string name="save_location_button">START TRACKING YOUR LOCATION</string>
+    <string name="stop_location_button">STOP TRACKING YOUR LOCATION</string>
     <string name="cannot_establish_GPS">"Cannot establish GPS connection!"</string>
-    <string name="GPS_settings_message">"GPS is not enabled.
-         Do you want to go to the settings menu?"</string>
+    <string name="GPS_settings_message">
+        "GPS is not enabled.Do you want to go to the settings menu?"</string>
+    <string name="starting_in_5">Starting to track your position in 5 seconds!</string>
+    <string name="thread_interrupted">
+        "Starting to track your position earlier than expected!"</string>
+    <string name="service_started">"The service has started!"</string>
 </resources>
