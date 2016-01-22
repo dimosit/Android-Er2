@@ -1,22 +1,22 @@
 package assignment2.android.hua.gr.android_er2.ui;
 
-import android.content.ComponentName;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import assignment2.android.hua.gr.android_er2.R;
+import assignment2.android.hua.gr.android_er2.broadcastReceiver.GPSStartedReceiver;
 import assignment2.android.hua.gr.android_er2.services.GPSTracker;
 
 public class MainActivity extends ActionBarActivity {
 
-    boolean recording = false;
+    GPSStartedReceiver receiver = new GPSStartedReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,24 +24,30 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void saveLocation(View v){
-        Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
 
-        // to kommati apo edw kai katw ua allaksei apla to evala etsi poli proxeira
-        // argotera pithanon tha dimiourgisoume AlarmManager kai tha trexoume to service kathe 30 deutera
-        // isws na mi xreiastei kan to button kai na ta valoume sthn onCreate epeidi de zitaei kati tetoio
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
 
-        if(!recording) {	// if the device is not recording GPS Location
-            recording = true;	// change the flag to true
-            startService(intent);	// and start the service
-            Toast.makeText(getApplicationContext(), "Recording...", Toast.LENGTH_SHORT).show();
+            if (serviceClass.getName().equals(service.service.getClassName()))
+                return true;
         }
 
-        else {
-            stopService(intent);	// if the device is recording GPS Location stop the service
-            recording = false;
-            Toast.makeText(getApplicationContext(), "Recording Stopped!", Toast.LENGTH_SHORT).show();
-        }
+        return false;
+    }
+
+    public void saveLocation(View v) {
+        Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_started),
+                Toast.LENGTH_LONG).show();
+        this.registerReceiver(receiver, null);
+    }
+
+    public void stopLocation(View v) {
+        Intent intent = new Intent(this, GPSTracker.class);
+        unregisterReceiver(receiver);
+
+        if (isMyServiceRunning(GPSTracker.class))
+            stopService(intent);
     }
 
     @Override
