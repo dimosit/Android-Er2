@@ -1,27 +1,47 @@
 package assignment2.android.hua.gr.android_er2.ui;
 
+import android.content.ComponentName;
+import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import assignment2.android.hua.gr.android_er2.R;
+import assignment2.android.hua.gr.android_er2.services.GPSTracker;
 
 public class MainActivity extends ActionBarActivity {
+
+    boolean recording = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button saveLocationButton = (Button) findViewById(R.id.saveLocationButton);
-        saveLocationButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //start service to activate location services
-            }
-        });
+    }
+
+    public void saveLocation(View v){
+        Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
+
+        // to kommati apo edw kai katw ua allaksei apla to evala etsi poli proxeira
+        // argotera pithanon tha dimiourgisoume AlarmManager kai tha trexoume to service kathe 30 deutera
+        // isws na mi xreiastei kan to button kai na ta valoume sthn onCreate epeidi de zitaei kati tetoio
+
+        if(!recording) {	// if the device is not recording GPS Location
+            recording = true;	// change the flag to true
+            startService(intent);	// and start the service
+            Toast.makeText(getApplicationContext(), "Recording...", Toast.LENGTH_SHORT).show();
+        }
+
+        else {
+            stopService(intent);	// if the device is recording GPS Location stop the service
+            recording = false;
+            Toast.makeText(getApplicationContext(), "Recording Stopped!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

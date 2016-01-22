@@ -24,9 +24,9 @@ public class DbHelper extends SQLiteOpenHelper {
     //Create the database
     private static final String DATABASE_CREATE =
             "CREATE TABLE " + DATABASE_TABLE +
-                    "("+USEID+"INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    +USERNAME+"TEXT NOT NULL,"
-                    +CURRENT_LOCATION+"TEXT NOT NULL"+");";
+                    "(" + USEID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + USERNAME + "TEXT NOT NULL,"
+                    + CURRENT_LOCATION + "TEXT NOT NULL" + ");";
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -44,6 +44,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL("DROP TABLE IF EXISTS " +  DATABASE_TABLE);
+        onCreate(db);
     }
 }

@@ -33,6 +33,4 @@ public class User {
         this.current_location = current_location;
     }
 
-
-
 }

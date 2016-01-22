@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Android-Er2</string>
     <string name="action_settings">Settings</string>
+    <string name="save_location_button">SAVE LOCATION</string>
+    <string name="cannot_establish_GPS">"Cannot establish GPS connection!"</string>
+    <string name="GPS_settings_message">"GPS is not enabled.
+         Do you want to go to the settings menu?"</string>
 </resources>
