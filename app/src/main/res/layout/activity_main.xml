@@ -15,7 +15,16 @@
         android:text="@string/save_location_button"
         android:id="@+id/saveLocationButton"
         android:onClick="saveLocation"
-        android:layout_marginTop="168dp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="83dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/stop_location_button"
+        android:id="@+id/stopLocationButton"
+        android:onClick="stopLocation"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
