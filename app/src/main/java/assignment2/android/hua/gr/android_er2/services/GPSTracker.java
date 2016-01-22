@@ -44,7 +44,7 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
-    public Location getLocation() {
+    public void getLocation() {
         try {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -106,8 +106,6 @@ public class GPSTracker extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return location;
     }
 
     /**
