@@ -20,9 +20,6 @@ import assignment2.android.hua.gr.android_er2.R;
  * Created by d1 on 21/1/2016.
  */
 public class GPSTracker extends Service implements LocationListener {
-
-    private  final Context mContext;
-
     // flag for GPS status
     boolean isGPSEnabled = false;
 
@@ -42,19 +39,14 @@ public class GPSTracker extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
-    public GPSTracker() {
-        mContext = null;
-    }
-
-    public GPSTracker(Context context) {
-        this.mContext = context;
+    @Override
+    public void onCreate() {
         getLocation();
     }
 
     public Location getLocation() {
         try {
-            locationManager = (LocationManager) mContext
-                    .getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
             // getting GPS status
             isGPSEnabled = locationManager
@@ -162,7 +154,7 @@ public class GPSTracker extends Service implements LocationListener {
      * On pressing Settings button will lauch Settings Options
      * */
     public void showSettingsAlert(){
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
 
         // Setting Dialog Title
         alertDialog.setTitle(getResources().getString(R.string.cannot_establish_GPS));
@@ -174,7 +166,7 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog,int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                mContext.startActivity(intent);
+                getApplicationContext().startActivity(intent);
             }
         });
 
