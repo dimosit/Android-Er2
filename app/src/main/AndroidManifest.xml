@@ -27,7 +27,7 @@
 
         <provider
             android:name=".contentProviders.UserProvider"
-            android:authorities="assignment2.android.hua.gr.android_er2             .contentProviders.LocationData"
+            android:authorities="assignment2.android.hua.gr.android_er2.contentProviders.LocationData"
             android:exported="false"></provider>
 
         <receiver android:name=".broadcastReceiver.GPSStartedReceiver">
