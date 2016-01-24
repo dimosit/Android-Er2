@@ -3,7 +3,7 @@
     package="assignment2.android.hua.gr.android_er2">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -20,19 +20,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".services.GPSTracker"
-            android:exported="false">
-        </service>
+            android:exported="false"></service>
+
+        <provider
+            android:name=".contentProviders.UserProvider"
+            android:authorities="assignment2.android.hua.gr.android_er2             .contentProviders.LocationData"
+            android:exported="false"></provider>
 
         <receiver android:name=".broadcastReceiver.GPSStartedReceiver">
-
             <intent-filter>
-                <action android:name="android.location.GPS_ENABLED_CHANGE">
-                </action>
+                <action android:name="android.location.GPS_ENABLED_CHANGE"></action>
             </intent-filter>
-
         </receiver>
+
+        <activity android:name=".ui.FirstActivity"></activity>
     </application>
 
 </manifest>
