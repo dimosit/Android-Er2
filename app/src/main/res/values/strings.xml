@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Android-Er2</string>
     <string name="action_settings">Settings</string>
+    <string name="welcome_text">Welcome! Please enter a nickname in order to continue&#8230;</string>
+    <string name="user_name">Nickname</string>
+    <string name="welcome_message">Jump In!</string>
+    <string name="first_time_run">assignment2.android.hua.gr.android_er2.ui.first_time_run</string>
     <string name="save_location_button">START TRACKING YOUR LOCATION</string>
     <string name="stop_location_button">STOP TRACKING YOUR LOCATION</string>
     <string name="cannot_establish_GPS">"Cannot establish GPS connection!"</string>
