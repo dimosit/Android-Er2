@@ -3,6 +3,7 @@ package assignment2.android.hua.gr.android_er2.ui;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -17,11 +18,26 @@ import assignment2.android.hua.gr.android_er2.services.GPSTracker;
 public class MainActivity extends ActionBarActivity {
 
     GPSStartedReceiver receiver = new GPSStartedReceiver();
+    boolean first;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isFirst();
         setContentView(R.layout.activity_main);
+    }
+
+    private void isFirst(){
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        first = sharedPref.getBoolean(getString(R.string.first_time_run), false);
+
+        if (first){
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean(getString(R.string.first_time_run), true);
+            editor.apply();
+            Intent intent = new Intent(this, FirstActivity.class);
+            startActivity(intent);
+        }
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
