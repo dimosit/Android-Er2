@@ -22,7 +22,8 @@ import assignment2.android.hua.gr.android_er2.database.DbHelper;
  */
 public class UserProvider extends ContentProvider {
 
-    static final String PROVIDER_NAME = "gr.hua.provider.LocationData";
+    static final String PROVIDER_NAME =
+            "assignment2.android.hua.gr.android_er2.contentProviders.LocationData";
     static final String URL = "content://" + PROVIDER_NAME + "/coordinates";
     static final Uri CONTENT_URI = Uri.parse(URL);
 
