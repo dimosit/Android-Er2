@@ -1,9 +1,12 @@
 package assignment2.android.hua.gr.android_er2.ui;
 
 import android.app.ActivityManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -11,8 +14,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.broadcastReceiver.GPSStartedReceiver;
+import assignment2.android.hua.gr.android_er2.model.User;
 import assignment2.android.hua.gr.android_er2.services.GPSTracker;
 
 public class MainActivity extends ActionBarActivity {
@@ -86,5 +92,36 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+//  Ebala na pernei Cursor  epeidh auto tha epistreei o ContentProvider a.k.a UserProvider an den mas
+//  to bazoume Void kai to kaloume mesa apo thn class
+    //requests resources from UserProvider
+    public class GetDataFromUserProvider extends AsyncTask<Cursor, Void, ArrayList<User>> {
+
+        private ProgressDialog dialog;
+        private Context context;
+        ArrayList<User> userData= new ArrayList<User>();
+
+
+        @Override
+        protected void onPreExecute() {
+            this.dialog.setMessage("Loading please wait...!");
+            //show dialog in main activity
+            this.dialog.show();
+        }
+
+        //constructor for dialog!!
+        public GetDataFromUserProvider(MainActivity activity) {
+            this.context = activity;
+            dialog = new ProgressDialog(context);
+        }
+
+
+
+        @Override
+        protected ArrayList<User> doInBackground(Cursor... params) {
+            return userData
+        }
     }
 }
