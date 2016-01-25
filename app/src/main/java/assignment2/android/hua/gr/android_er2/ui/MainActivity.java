@@ -121,7 +121,7 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         protected ArrayList<User> doInBackground(Cursor... params) {
-            return userData
+            return userData;
         }
     }
 }
