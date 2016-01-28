@@ -65,7 +65,14 @@ public class GPSTracker extends Service implements LocationListener {
                 getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         int id = userDetails.getInt("MyId", 0);
 
-        new PostLocation(id, location, getApplicationContext()).execute();
+        String locationString = locationToString();
+
+        new PostLocation(id, locationString, getApplicationContext()).execute();
+    }
+
+    private String locationToString(){
+        return String.valueOf(location.getLatitude())
+                + "," + String.valueOf(location.getLongitude());
     }
 
     public void getLocation() {
