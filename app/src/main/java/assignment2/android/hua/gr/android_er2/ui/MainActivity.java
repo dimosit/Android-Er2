@@ -37,11 +37,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void isFirst(){
         SharedPreferences sharedPref = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        first = sharedPref.getBoolean(getString(R.string.first_time_run), false);
+        first = sharedPref.getBoolean(getString(R.string.first_time_run), true);
 
         if (first){
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.first_time_run), true);
+            editor.putBoolean(getString(R.string.first_time_run), false);
             editor.apply();
             Intent intent = new Intent(this, FirstActivity.class);
             startActivity(intent);
