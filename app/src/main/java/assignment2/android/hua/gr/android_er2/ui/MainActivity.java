@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -36,11 +37,11 @@ public class MainActivity extends ActionBarActivity {
 
     private void isFirst(){
         SharedPreferences sharedPref = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        first = sharedPref.getBoolean(getString(R.string.first_time_run), false);
+        first = sharedPref.getBoolean(getString(R.string.first_time_run), true);
 
         if (first){
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.first_time_run), true);
+            editor.putBoolean(getString(R.string.first_time_run), false);
             editor.apply();
             Intent intent = new Intent(this, FirstActivity.class);
             startActivity(intent);
@@ -62,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
     public void saveLocation(View v) {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_started),
                 Toast.LENGTH_LONG).show();
-        this.registerReceiver(receiver, null);
+        this.registerReceiver(receiver, new IntentFilter("android.location.GPS_ENABLED_CHANGE"));
     }
 
     public void stopLocation(View v) {
