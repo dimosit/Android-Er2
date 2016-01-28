@@ -14,6 +14,7 @@ public class FirstActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first);
+        register();
     }
 
     public void register() {
