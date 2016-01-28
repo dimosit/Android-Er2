@@ -4,6 +4,7 @@ import android.app.ActivityManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -62,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
     public void saveLocation(View v) {
         Toast.makeText(getApplicationContext(), getResources().getString(R.string.service_started),
                 Toast.LENGTH_LONG).show();
-        this.registerReceiver(receiver, null);
+        this.registerReceiver(receiver, new IntentFilter("android.location.GPS_ENABLED_CHANGE"));
     }
 
     public void stopLocation(View v) {
