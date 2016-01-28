@@ -27,6 +27,7 @@
         android:text="@string/welcome_message"
         android:textColor="#338c82"
         android:id="@+id/button"
+        android:onClick="register"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

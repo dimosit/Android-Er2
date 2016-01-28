@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,7 +15,25 @@ import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
 import assignment2.android.hua.gr.android_er2.R;
+import assignment2.android.hua.gr.android_er2.asyncTasks.PostLocation;
+import assignment2.android.hua.gr.android_er2.database.DataManagement;
 
 /**
  * Created by d1 on 21/1/2016.
@@ -42,6 +61,11 @@ public class GPSTracker extends Service implements LocationListener {
     @Override
     public void onCreate() {
         getLocation();
+        SharedPreferences userDetails =
+                getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        int id = userDetails.getInt("MyId", 0);
+
+        new PostLocation(id, location, getApplicationContext()).execute();
     }
 
     public void getLocation() {
@@ -59,7 +83,7 @@ public class GPSTracker extends Service implements LocationListener {
             if (!isGPSEnabled && !isNetworkEnabled)
                 showSettingsAlert();
 
-             else {
+            else {
                 this.canGetLocation = true;
 
                 // First get location from Network Provider
@@ -111,17 +135,17 @@ public class GPSTracker extends Service implements LocationListener {
     /**
      * Stop using GPS listener
      * Calling this function will stop using GPS in your app
-     * */
-    public void stopUsingGPS(){
-        if(locationManager != null)
+     */
+    public void stopUsingGPS() {
+        if (locationManager != null)
             locationManager.removeUpdates(GPSTracker.this);
     }
 
     /**
      * Function to get latitude
-     * */
-    public double getLatitude(){
-        if(location != null)
+     */
+    public double getLatitude() {
+        if (location != null)
             latitude = location.getLatitude();
 
         // return latitude
@@ -130,9 +154,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to get longitude
-     * */
-    public double getLongitude(){
-        if(location != null)
+     */
+    public double getLongitude() {
+        if (location != null)
             longitude = location.getLongitude();
 
         // return longitude
@@ -141,8 +165,9 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to check GPS/wifi enabled
+     *
      * @return boolean
-     * */
+     */
     public boolean canGetLocation() {
         return this.canGetLocation;
     }
@@ -150,8 +175,8 @@ public class GPSTracker extends Service implements LocationListener {
     /**
      * Function to show settings alert dialog
      * On pressing Settings button will lauch Settings Options
-     * */
-    public void showSettingsAlert(){
+     */
+    public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
 
         // Setting Dialog Title
@@ -162,7 +187,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         // Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog,int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 getApplicationContext().startActivity(intent);
             }

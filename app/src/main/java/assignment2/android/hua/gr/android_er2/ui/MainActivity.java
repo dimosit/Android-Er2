@@ -17,6 +17,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import assignment2.android.hua.gr.android_er2.R;
+import assignment2.android.hua.gr.android_er2.asyncTasks.DisplayLocations;
 import assignment2.android.hua.gr.android_er2.broadcastReceiver.GPSStartedReceiver;
 import assignment2.android.hua.gr.android_er2.model.User;
 import assignment2.android.hua.gr.android_er2.services.GPSTracker;
@@ -34,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void isFirst(){
-        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         first = sharedPref.getBoolean(getString(R.string.first_time_run), false);
 
         if (first){
@@ -72,6 +73,11 @@ public class MainActivity extends ActionBarActivity {
             stopService(intent);
     }
 
+    public void showLocations(View v){
+        Intent intent = new Intent(this, LocationsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -92,36 +98,5 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-//  Ebala na pernei Cursor  epeidh auto tha epistreei o ContentProvider a.k.a UserProvider an den mas
-//  to bazoume Void kai to kaloume mesa apo thn class
-    //requests resources from UserProvider
-    public class GetDataFromUserProvider extends AsyncTask<Cursor, Void, ArrayList<User>> {
-
-        private ProgressDialog dialog;
-        private Context context;
-        ArrayList<User> userData= new ArrayList<User>();
-
-
-        @Override
-        protected void onPreExecute() {
-            this.dialog.setMessage("Loading please wait...!");
-            //show dialog in main activity
-            this.dialog.show();
-        }
-
-        //constructor for dialog!!
-        public GetDataFromUserProvider(MainActivity activity) {
-            this.context = activity;
-            dialog = new ProgressDialog(context);
-        }
-
-
-
-        @Override
-        protected ArrayList<User> doInBackground(Cursor... params) {
-            return userData;
-        }
     }
 }

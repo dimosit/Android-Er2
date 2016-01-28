@@ -4,14 +4,34 @@
     <string name="welcome_text">Welcome! Please enter a nickname in order to continue&#8230;</string>
     <string name="user_name">Nickname</string>
     <string name="welcome_message">Jump In!</string>
+    <string name="empty_name">Nickname cannot be empty!</string>
     <string name="first_time_run">assignment2.android.hua.gr.android_er2.ui.first_time_run</string>
     <string name="save_location_button">START TRACKING YOUR LOCATION</string>
     <string name="stop_location_button">STOP TRACKING YOUR LOCATION</string>
-    <string name="cannot_establish_GPS">"Cannot establish GPS connection!"</string>
+    <string name="cannot_establish_GPS">Cannot establish GPS connection!</string>
     <string name="GPS_settings_message">
-        "GPS is not enabled.Do you want to go to the settings menu?"</string>
+        GPS is not enabled.Do you want to go to the settings menu?</string>
     <string name="starting_in_5">Starting to track your position in 5 seconds!</string>
     <string name="thread_interrupted">
-        "Starting to track your position earlier than expected!"</string>
-    <string name="service_started">"The service has started!"</string>
+        Starting to track your position earlier than expected!</string>
+    <string name="service_started">The service has started!</string>
+    <string name="loading_message">Loading please wait&#8230;!</string>
+    <string name="registering_message">Registering please wait&#8230;!</string>
+    <string name="registration_success">You have been successfully registered!</string>
+    <string name="registration_error">Oops! You have not been successfully registered.
+        \nPlease try again!</string>
+    <string name="posting_location">Your location is being saved&#8230;</string>
+    <string name="posting_location_success">Your location has been successfully saved!</string>
+    <string name="posting_location_error">Oops!\
+        Your location has not been saved successfully!</string>
+    <string name="show_all_locations">SHOW ME \nEVERY USER\'S LAST LOCATION</string>
+    <string name="getting_data">Getting other users\' last locations&#8230;</string>
+    <string name="fetch_error">Oops!An error occurred while getting other users\' locations!</string>
+    <string name="loading_array">Loading data&#8230;</string>
+    <string name="title_activity_locations">LocationsActivity</string>
+    <string name="empty_array">No user locations exist!</string>
+    <string name="table_titles">NICKNAME</string>
+    <string name="choose_name">Choose a name to see his last location on the map</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="wrong_location">Something went wrong while trying to find this location on the map!</string>
 </resources>

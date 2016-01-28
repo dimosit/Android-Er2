@@ -24,23 +24,23 @@ public class UserProvider extends ContentProvider {
 
     static final String PROVIDER_NAME =
             "assignment2.android.hua.gr.android_er2.contentProviders.LocationData";
-    static final String URL = "content://" + PROVIDER_NAME + "/coordinates";
-    static final Uri CONTENT_URI = Uri.parse(URL);
+    static final String URL = "content://" + PROVIDER_NAME + "/users";
+    public static final Uri CONTENT_URI = Uri.parse(URL);
 
-    static final String _ID = "_id";
-    //static final String LATITUDE = "latitude";
-    //static final String LONGITUDE = "longitude";
+    public static final String USERNAME = "username";
+    public static final String USEID = "useid";
+    public static final String LOCATION = "current_location";
 
-    private static HashMap<String, String> COORDINATES_MAP;
+    private static HashMap<String, String> USERS_MAP;
 
-    static final int COORDINATES = 1;
-    static final int COORDINATE_ID = 2;
+    static final int USERS = 1;
+    static final int USERS_ID = 2;
 
     static final UriMatcher uriMatcher;
     static{
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(PROVIDER_NAME, "coordinates", COORDINATES);
-        uriMatcher.addURI(PROVIDER_NAME, "coordinates/#", COORDINATE_ID);
+        uriMatcher.addURI(PROVIDER_NAME, "users", USERS);
+        uriMatcher.addURI(PROVIDER_NAME, "users/#", USERS_ID);
     }
 
     private SQLiteDatabase db;
@@ -61,19 +61,41 @@ public class UserProvider extends ContentProvider {
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Cursor query(@NonNull Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Uri insert(@NonNull Uri uri, ContentValues values) {
+
+        /**
+         * Add a new location record
+         */
+        long rowID = db.insert("users", "", values);
+
+        /**
+         * If record is added successfully
+         */
+        if (rowID > 0) {
+            Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
+            getContext().getContentResolver().notifyChange(_uri, null);
+            return _uri;
+        }
+
+        throw new SQLException();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public Cursor query(@NonNull Uri uri, String[] projection, String selection,
+                        String[] selectionArgs, String sortOrder) {
 
             SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-            qb.setTables("coordinates");
+            qb.setTables("users");
 
             switch (uriMatcher.match(uri)) {
 
-                case COORDINATES:
-                    qb.setProjectionMap(COORDINATES_MAP);
+                case USERS:
+                    qb.setProjectionMap(USERS_MAP);
                     break;
 
-                case COORDINATE_ID:
-                    qb.appendWhere( _ID + "=" + uri.getPathSegments().get(1));
+                case USERS_ID:
+                    qb.appendWhere( USEID + "=" + uri.getPathSegments().get(1));
                     break;
 
                 default:
@@ -85,7 +107,7 @@ public class UserProvider extends ContentProvider {
                 /**
                  * sort on location id
                  */
-                sortOrder = _ID;
+                sortOrder = USERNAME;
             }
 
             Cursor c = qb.query(db,	projection,	selection, selectionArgs, null, null, sortOrder);
@@ -101,29 +123,6 @@ public class UserProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         return null;
-    }
-
-    @SuppressWarnings("ConstantConditions")
-    @Override
-    public Uri insert(@NonNull Uri uri, ContentValues values) {
-
-        /**
-         * Add a new location record
-         */
-        long rowID = db.insert("coordinates", "", values);
-
-        /**
-         * If record is added successfully
-         */
-        if (rowID > 0)
-        {
-            Uri _uri = ContentUris.withAppendedId(CONTENT_URI, rowID);
-            getContext().getContentResolver().notifyChange(_uri, null);
-            return _uri;
-        }
-
-        throw new SQLException("Failed to add a record into " + uri);
-
     }
 
     @Override
