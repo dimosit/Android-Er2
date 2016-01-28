@@ -2,6 +2,7 @@ package assignment2.android.hua.gr.android_er2.ui;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -16,7 +17,7 @@ public class FirstActivity extends ActionBarActivity {
         setContentView(R.layout.activity_first);
     }
 
-    public void register() {
+    public void register(View v) {
         EditText editText = (EditText) findViewById(R.id.editText);
         String nickname = editText.getText().toString();
 
