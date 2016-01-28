@@ -211,6 +211,16 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.show();
     }
 
+    /**
+     * Edw mporoume na kaloume to deutero service kathe fora pou teleiwnei to prwto.
+     */
+    @Override
+    public void onDestroy (){
+        Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
+        startActivity(intent);
+        super.onDestroy();
+    }
+
     @Override
     public void onLocationChanged(Location location) {
     }
