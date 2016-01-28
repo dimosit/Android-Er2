@@ -44,8 +44,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GoogleMap map;
         map = googleMap;
 
+        String delimiter = "[,]";
+        String[] tokens = location.split(delimiter);
+
+        double latitude = Double.parseDouble(tokens[0]);
+        double longitude = Double.parseDouble(tokens[1]);
+
         // Add a marker and move the camera
-        LatLng latLng = new LatLng();
+        LatLng latLng = new LatLng(latitude, longitude);
         map.addMarker(new MarkerOptions().position(latLng).title("User's last location"));
         map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
     }
