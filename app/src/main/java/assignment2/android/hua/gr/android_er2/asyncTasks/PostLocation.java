@@ -30,13 +30,13 @@ import assignment2.android.hua.gr.android_er2.R;
  */
 public class PostLocation extends AsyncTask<Void, Void, Void> {
 
-    Location location;
+    String location;
     int id;
     int status;
     Context context;
     ProgressDialog dialog;
 
-    public PostLocation(int id, Location location, Context context){
+    public PostLocation(int id, String location, Context context){
         this.status = 0;
         this.id = id;
         this.location = location;
@@ -67,7 +67,7 @@ public class PostLocation extends AsyncTask<Void, Void, Void> {
             // Adding data
             List<NameValuePair> nameValuePairs = new ArrayList<>(2);
             nameValuePairs.add(new BasicNameValuePair("method", "newLocation"));
-            nameValuePairs.add(new BasicNameValuePair("location", location.toString()));
+            nameValuePairs.add(new BasicNameValuePair("location", location));
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             // Execute HTTP Post Request
