@@ -8,7 +8,7 @@
     <string name="first_time_run">assignment2.android.hua.gr.android_er2.ui.first_time_run</string>
     <string name="save_location_button">START TRACKING YOUR LOCATION</string>
     <string name="stop_location_button">STOP TRACKING YOUR LOCATION</string>
-    <string name="gps_network_not_enabled">Cannot establish GPS connection!</string>
+    <string name="cannot_establish_GPS">Cannot establish GPS connection!</string>
     <string name="GPS_settings_message">
         GPS is not enabled.Do you want to go to the settings menu?</string>
     <string name="starting_in_5">Starting to track your position in 5 seconds!</string>
