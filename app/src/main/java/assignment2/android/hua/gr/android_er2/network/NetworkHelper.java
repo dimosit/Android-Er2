@@ -34,15 +34,15 @@ public class NetworkHelper {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
         // Setting Dialog Title
-        alertDialog.setTitle(context.getResources().getString(R.string.cannot_establish_GPS));
+        alertDialog.setTitle(context.getResources().getString(R.string.cannot_establish_Internet));
 
         // Setting Dialog Message
-        alertDialog.setMessage(context.getResources().getString(R.string.GPS_settings_message));
+        alertDialog.setMessage(context.getResources().getString(R.string.Internet_settings_message));
 
         // Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
                 context.startActivity(intent);
             }
         });

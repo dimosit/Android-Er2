@@ -34,4 +34,6 @@
     <string name="choose_name">Choose a name to see his last location on the map</string>
     <string name="title_activity_maps">Map</string>
     <string name="wrong_location">Something went wrong while trying to find this location on the map!</string>
+    <string name="cannot_establish_Internet">Cannot establish Network connection!!</string>
+    <string name="Internet_settings_message"> Internet  is not enable.Do you want to go to the settings menu?</string>
 </resources>
