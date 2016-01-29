@@ -28,7 +28,7 @@ import assignment2.android.hua.gr.android_er2.R;
 /**
  * Created by Manos on 27/1/2016.
  */
-public class PostLocation extends AsyncTask<Void, Void, Void> {
+public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     String location;
     int id;
@@ -36,7 +36,7 @@ public class PostLocation extends AsyncTask<Void, Void, Void> {
     Context context;
     ProgressDialog dialog;
 
-    public PostLocation(int id, String location, Context context){
+    public SendLocation(int id, String location, Context context){
         this.status = 0;
         this.id = id;
         this.location = location;

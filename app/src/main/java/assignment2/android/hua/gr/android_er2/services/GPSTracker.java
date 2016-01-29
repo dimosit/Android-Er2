@@ -2,7 +2,6 @@ package assignment2.android.hua.gr.android_er2.services;
 
 import android.app.AlertDialog;
 import android.app.Service;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,28 +11,9 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
-import android.util.Log;
-import android.widget.Toast;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 import assignment2.android.hua.gr.android_er2.R;
-import assignment2.android.hua.gr.android_er2.asyncTasks.PostLocation;
-import assignment2.android.hua.gr.android_er2.database.DataManagement;
+import assignment2.android.hua.gr.android_er2.asyncTasks.SendLocation;
 
 /**
  * Created by d1 on 21/1/2016.
@@ -67,7 +47,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         String locationString = locationToString();
 
-        new PostLocation(id, locationString, getApplicationContext()).execute();
+        new SendLocation(id, locationString, getApplicationContext()).execute();
     }
 
     private String locationToString(){
