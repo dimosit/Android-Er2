@@ -3,9 +3,13 @@ package assignment2.android.hua.gr.android_er2.asyncTasks;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -29,6 +33,7 @@ import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.contentProviders.UserProvider;
 import assignment2.android.hua.gr.android_er2.database.DataManagement;
 import assignment2.android.hua.gr.android_er2.model.User;
+import assignment2.android.hua.gr.android_er2.ui.MainActivity;
 
 /**
  * Created by Manos on 27/1/2016.
@@ -41,7 +46,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
     User user;
     int status;
 
-    public Register(String name, Context context){
+    public Register(String name, Context context) {
         this.name = name;
         this.context = context;
         this.user = new User();
@@ -52,7 +57,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
     public void postData() {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://dit117-hua.tk");
+        HttpPost httppost = new HttpPost("http://dit117-hua.tk/index.php");
 
         try {
             // Adding data
@@ -82,7 +87,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    public void insertUser(){
+    public void insertUser() {
         DataManagement dataManagement = new DataManagement();
 
         if (!dataManagement.insertUserToDB(user))
@@ -107,7 +112,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         postData();
         if (status == 0)
-                insertUser();
+            insertUser();
         return null;
     }
 
@@ -115,7 +120,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void v) {
         progressDialogDismiss();
 
-        if (status != 0){
+        if (status != 0) {
             Toast.makeText(context, R.string.registration_error, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -127,5 +132,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
         editor.apply();
 
         Toast.makeText(context, R.string.registration_success, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
     }
 }
