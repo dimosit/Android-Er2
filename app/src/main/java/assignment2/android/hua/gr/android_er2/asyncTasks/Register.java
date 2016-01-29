@@ -19,7 +19,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -57,17 +59,21 @@ public class Register extends AsyncTask<Void, Void, Void> {
     public void postData() {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://dit117-hua.tk/index.php");
+        String url = "http://dit117-hua.tk?";
 
         try {
             // Adding data
             List<NameValuePair> nameValuePairs = new ArrayList<>(2);
             nameValuePairs.add(new BasicNameValuePair("method", "assignId"));
             nameValuePairs.add(new BasicNameValuePair("username", name));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            String paramString = URLEncodedUtils.format(nameValuePairs, "utf-8");
+            url += paramString;
+
+            HttpGet httpGet = new HttpGet(url);
 
             // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
+            HttpResponse response = httpclient.execute(httpGet);
             // Convert Response's String to json object
             JSONObject json = new JSONObject(response.toString());
             // get data json object

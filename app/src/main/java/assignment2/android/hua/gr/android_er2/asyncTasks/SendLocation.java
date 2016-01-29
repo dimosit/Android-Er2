@@ -12,14 +12,18 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.HttpParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,17 +65,26 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
     protected Void doInBackground(Void... voids) {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
-        HttpPost httppost = new HttpPost("http://dit117-hua.tk");
+        String url = "http://dit117-hua.tk?";
 
         try {
+            SharedPreferences sharedPref =
+                    context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            int myId = sharedPref.getInt("MyId", 0);
+
             // Adding data
-            List<NameValuePair> nameValuePairs = new ArrayList<>(2);
+            List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("method", "newLocation"));
             nameValuePairs.add(new BasicNameValuePair("location", location));
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+            nameValuePairs.add(new BasicNameValuePair("useid", String.valueOf(myId)));
+
+            String paramString = URLEncodedUtils.format(nameValuePairs, "utf-8");
+            url += paramString;
+
+            HttpGet httpGet = new HttpGet(url);
 
             // Execute HTTP Post Request
-            HttpResponse response = httpclient.execute(httppost);
+            HttpResponse response = httpclient.execute(httpGet);
 
             // Convert Response's String to json object
             JSONObject json = new JSONObject(response.toString());
