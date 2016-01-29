@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.asyncTasks.Register;
+import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 
 public class FirstActivity extends ActionBarActivity {
 
@@ -23,7 +24,12 @@ public class FirstActivity extends ActionBarActivity {
 
         if (nickname.isEmpty())
             Toast.makeText(this, R.string.empty_name, Toast.LENGTH_SHORT).show();
-        else
-            new Register(nickname, getApplicationContext()).execute();
+        else {
+            NetworkHelper networkHelper = new NetworkHelper(this);
+            if (networkHelper.isNetworkAvailable())
+                new Register(nickname, this).execute();
+            else
+                networkHelper.showSettingsAlert();
+        }
     }
 }
