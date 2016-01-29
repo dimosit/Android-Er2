@@ -31,11 +31,11 @@ public class NetworkHelper {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public boolean isGpsAvaiable(){
+    public boolean isGpsAvailable(){
         boolean gps_check;
         LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         gps_check = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        if (gps_check == false){
+        if (!gps_check){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
             // Setting Dialog Title

@@ -26,7 +26,7 @@ public class FirstActivity extends ActionBarActivity {
             Toast.makeText(this, R.string.empty_name, Toast.LENGTH_SHORT).show();
         else {
             NetworkHelper networkHelper = new NetworkHelper(this);
-            if (networkHelper.isNetworkAvailable() && networkHelper.isGpsAvaiable())
+            if (networkHelper.isNetworkAvailable() && networkHelper.isGpsAvailable())
                 new Register(nickname, this).execute();
             else
                 networkHelper.showSettingsAlert();
