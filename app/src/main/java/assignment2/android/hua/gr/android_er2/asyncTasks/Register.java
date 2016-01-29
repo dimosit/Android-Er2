@@ -125,10 +125,12 @@ public class Register extends AsyncTask<Void, Void, Void> {
             return;
         }
 
+
         // Save our id in order to post to the server our location later
         SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("MyId", user.getUseid());
+        editor.putBoolean(context.getString(R.string.first_time_run), false);
         editor.apply();
 
         Toast.makeText(context, R.string.registration_success, Toast.LENGTH_SHORT).show();

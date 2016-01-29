@@ -42,9 +42,6 @@ public class MainActivity extends ActionBarActivity {
         if (first){
             Intent intent = new Intent(this, FirstActivity.class);
             startActivity(intent);
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.first_time_run), false);
-            editor.apply();
         }
     }
 
