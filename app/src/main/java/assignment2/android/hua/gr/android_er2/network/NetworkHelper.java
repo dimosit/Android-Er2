@@ -9,6 +9,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -81,11 +82,19 @@ public class NetworkHelper {
         // Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                //test
-                Intent intent = new Intent();
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
-                context.startActivity(intent);
+
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                if (currentapiVersion < Build.VERSION_CODES.JELLY_BEAN) {
+                    Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                    ComponentName cName = new ComponentName("com.android.phone", "com.android.phone.Settings");
+                    intent.setComponent(cName);
+                } else {
+                    Intent intent = new Intent();
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
+                    context.startActivity(intent);
+                }
+
             }
         });
 
