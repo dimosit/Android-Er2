@@ -27,8 +27,7 @@ public class GPSStartedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
-        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED") ||
-                intent.getAction().matches("assignment2.android.hua.gr.android_er2.GPS_ALARM")){
+        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
             NetworkHelper helper = new NetworkHelper(context);
 
             if (helper.isGpsAvailable()) {
@@ -52,13 +51,37 @@ public class GPSStartedReceiver extends BroadcastReceiver {
                         Intent intent = new Intent(context, GPSTracker.class);
                         context.startService(intent);
 
-                        // Fetch every 30 seconds
+                        // Fetch in 30 seconds
                         service.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                                 cal.getTimeInMillis(), REPEAT_TIME, pending);
                     }
                 }, WAIT_TIME);
 
             }
+        }
+
+        if (intent.getAction().matches("assignment2.android.hua.gr.android_er2.GPS_ALARM")) {
+            NetworkHelper helper = new NetworkHelper(context);
+
+            if (helper.isGpsAvailable()) {
+                final Handler handler = new Handler();
+
+                AlarmManager service = (AlarmManager) context
+                        .getSystemService(Context.ALARM_SERVICE);
+                Intent i = new Intent(context, GPSStartedReceiver.class);
+                i.setAction("assignment2.android.hua.gr.android_er2.GPS_ALARM");
+                PendingIntent pending = PendingIntent.getBroadcast(context, 0, i,
+                        PendingIntent.FLAG_CANCEL_CURRENT);
+                Calendar cal = Calendar.getInstance();
+
+                Intent intent2 = new Intent(context, GPSTracker.class);
+                context.startService(intent2);
+
+                // Fetch every 30 seconds
+                service.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                        cal.getTimeInMillis(), REPEAT_TIME, pending);
+            }
+
         }
     }
 }
