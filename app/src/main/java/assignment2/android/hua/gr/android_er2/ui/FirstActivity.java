@@ -32,4 +32,9 @@ public class FirstActivity extends ActionBarActivity {
                 networkHelper.showSettingsAlert();
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing
+    }
 }

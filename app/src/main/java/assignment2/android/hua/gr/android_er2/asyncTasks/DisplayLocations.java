@@ -47,7 +47,7 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
     }
 
     void fetchData() {
-        DataManagement dm = new DataManagement();
+        DataManagement dm = new DataManagement(context);
         userData = dm.getAllUsersFromDB();
     }
 

@@ -36,6 +36,7 @@ public class NetworkHelper {
         boolean gps_check;
         LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         gps_check = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+
         if (!gps_check){
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
@@ -63,6 +64,7 @@ public class NetworkHelper {
             // Showing Alert Message
             alertDialog.show();
         }
+
         return gps_check;
     }
 

@@ -47,7 +47,7 @@ public class GPSTracker extends Service implements LocationListener {
 
         String locationString = locationToString();
 
-        new SendLocation(id, locationString, getApplicationContext()).execute();
+        new SendLocation(id, locationString, GPSTracker.this).execute();
     }
 
     private String locationToString(){

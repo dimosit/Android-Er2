@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     //Database info
-    private  static final String   DATABASE_NAME  = "hua_users";
+    public   static final String   DATABASE_NAME  = "hua_users";
     public   static final String   DATABASE_TABLE = "users";
     private static final int DATABASE_VERSION = 1;
 
@@ -23,7 +23,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     //Create the database
     private static final String DATABASE_CREATE =
-            "CREATE TABLE " + DATABASE_TABLE +
+            "CREATE TABLE IF NOT EXISTS " + DATABASE_TABLE +
                     "(" + USEID + "INTEGER PRIMARY KEY,"
                     + USERNAME + "TEXT NOT NULL,"
                     + CURRENT_LOCATION + "TEXT" + ");";

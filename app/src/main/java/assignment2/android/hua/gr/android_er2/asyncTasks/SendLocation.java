@@ -46,6 +46,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
         this.id = id;
         this.location = location;
         this.context = context;
+        this.dialog = new ProgressDialog(context);
     }
 
     // dismiss progress dialog

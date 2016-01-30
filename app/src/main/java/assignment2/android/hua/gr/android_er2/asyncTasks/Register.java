@@ -1,16 +1,9 @@
 package assignment2.android.hua.gr.android_er2.asyncTasks;
 
 import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.SQLException;
-import android.location.LocationManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -18,9 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
@@ -35,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import assignment2.android.hua.gr.android_er2.R;
-import assignment2.android.hua.gr.android_er2.contentProviders.UserProvider;
 import assignment2.android.hua.gr.android_er2.database.DataManagement;
 import assignment2.android.hua.gr.android_er2.model.User;
 import assignment2.android.hua.gr.android_er2.ui.MainActivity;
@@ -113,7 +103,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
     }
 
     public void insertUser() {
-        DataManagement dataManagement = new DataManagement();
+        DataManagement dataManagement = new DataManagement(context);
 
         if (!dataManagement.insertUserToDB(user))
             status = 4;

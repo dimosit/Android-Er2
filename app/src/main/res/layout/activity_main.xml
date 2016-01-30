@@ -12,32 +12,21 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/save_location_button"
-        android:id="@+id/saveLocationButton"
-        android:onClick="saveLocation"
-        android:textColor="#338c82"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="83dp" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/stop_location_button"
-        android:id="@+id/stopLocationButton"
-        android:onClick="stopLocation"
+        android:text="@string/show_all_locations"
+        android:id="@+id/showLocations"
+        android:onClick="showLocations"
         android:textColor="#338c82"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/show_all_locations"
-        android:id="@+id/button2"
-        android:onClick="showLocations"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/info"
+        android:id="@+id/textView3"
         android:textColor="#338c82"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="85dp" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 </RelativeLayout>

@@ -69,7 +69,7 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
     }
 
     void saveData() {
-        DataManagement dm = new DataManagement();
+        DataManagement dm = new DataManagement(context);
         if(!dm.insertAllUsersToDB(users))
             status = 4;
     }

@@ -14,7 +14,7 @@ public class LocationsActivity extends ActionBarActivity {
         setContentView(R.layout.activity_locations);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        new DisplayLocations(this, getApplicationContext()).execute();
+        new DisplayLocations(this, LocationsActivity.this).execute();
     }
 
 }

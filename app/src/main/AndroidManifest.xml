@@ -36,16 +36,18 @@
 
         <service
             android:name=".services.GPSTracker"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <provider
-            android:name=".contentProviders.UserProvider"
-            android:authorities="assignment2.android.hua.gr.android_er2.contentProviders.LocationData"
-            android:exported="false"></provider>
+            android:name=".contentProvider.UserProvider"
+            android:authorities="assignment2.android.hua.gr.android_er2.contentProvider.UserProvider"
+            android:exported="false" />
 
-        <receiver android:name=".broadcastReceiver.GPSStartedReceiver">
+        <action android:name="android.location.PROVIDERS_CHANGED" />
+
+        <receiver android:name=".broadcastReceivers.GPSStartedReceiver">
             <intent-filter>
-                <action android:name="android.location.GPS_ENABLED_CHANGE" />
+                <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -85,6 +87,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="assignment2.android.hua.gr.android_er2.ui.LocationsActivity" />
         </activity>
+
+        <receiver
+            android:name=".broadcastReceivers.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true">
+        </receiver>
     </application>
 
 </manifest>
