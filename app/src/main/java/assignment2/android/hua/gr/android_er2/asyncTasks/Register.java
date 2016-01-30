@@ -27,8 +27,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,20 @@ public class Register extends AsyncTask<Void, Void, Void> {
         this.dialog = new ProgressDialog(context);
     }
 
+    // convert inputstream to String
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+
+        return result;
+    }
+
     public void postData() {
         // Create a new HttpClient and Post Header
         HttpClient httpclient = new DefaultHttpClient();
@@ -78,13 +94,13 @@ public class Register extends AsyncTask<Void, Void, Void> {
             InputStream inputStream = response.getEntity().getContent();
 
             // Convert Response Stream to json object
-            JSONObject json = new JSONObject(inputStream.toString());
+            JSONObject json = new JSONObject(convertInputStreamToString(inputStream));
             // get data json object
             JSONObject json_data = json.getJSONObject("data");
             // get value from data Json Object
             String useid = json_data.getString("useid");
 
-            user.setUseid(Integer.getInteger(useid));
+            user.setUseid(Integer.parseInt(useid));
             user.setUsername(name);
 
         } catch (ClientProtocolException e) {
