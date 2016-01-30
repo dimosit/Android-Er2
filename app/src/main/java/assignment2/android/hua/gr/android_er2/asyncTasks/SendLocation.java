@@ -46,7 +46,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
         this.id = id;
         this.location = location;
         this.context = context;
-        this.dialog = new ProgressDialog(context);
+        //this.dialog = new ProgressDialog(context);
     }
 
     // dismiss progress dialog
@@ -57,10 +57,10 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
-        dialog.setMessage(context.getResources().getString(R.string.posting_location));
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        //dialog.setMessage(context.getResources().getString(R.string.posting_location));
+        //dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         //show dialog in main activity
-        dialog.show();
+        //dialog.show();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-        progressDialogDismiss();
+        //progressDialogDismiss();
 
         if (status != 0){
             Toast.makeText(context, R.string.posting_location_error, Toast.LENGTH_SHORT).show();
