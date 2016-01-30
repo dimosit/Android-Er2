@@ -22,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -83,11 +84,12 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
             HttpGet httpGet = new HttpGet(url);
 
-            // Execute HTTP Post Request
+            // Execute HTTP Get Request
             HttpResponse response = httpclient.execute(httpGet);
+            InputStream inputStream = response.getEntity().getContent();
 
             // Convert Response's String to json object
-            JSONObject json = new JSONObject(response.toString());
+            JSONObject json = new JSONObject(inputStream.toString());
             // get code json object
             JSONObject json_code = json.getJSONObject("code");
             if (Integer.getInteger(json_code.toString()) != 1)

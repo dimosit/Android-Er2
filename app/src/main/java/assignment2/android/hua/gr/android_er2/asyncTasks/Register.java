@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,10 +73,12 @@ public class Register extends AsyncTask<Void, Void, Void> {
 
             HttpGet httpGet = new HttpGet(url);
 
-            // Execute HTTP Post Request
+            // Execute HTTP Get Request
             HttpResponse response = httpclient.execute(httpGet);
-            // Convert Response's String to json object
-            JSONObject json = new JSONObject(response.toString());
+            InputStream inputStream = response.getEntity().getContent();
+
+            // Convert Response Stream to json object
+            JSONObject json = new JSONObject(inputStream.toString());
             // get data json object
             JSONObject json_data = json.getJSONObject("data");
             // get value from data Json Object
