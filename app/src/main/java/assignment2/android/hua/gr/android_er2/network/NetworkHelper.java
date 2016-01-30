@@ -1,6 +1,7 @@
 package assignment2.android.hua.gr.android_er2.network;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -79,6 +80,8 @@ public class NetworkHelper {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
+                ComponentName cName = new ComponentName("com.android.phone","com.android.phone.Settings");
+                intent.setComponent(cName);
                 context.startActivity(intent);
             }
         });
