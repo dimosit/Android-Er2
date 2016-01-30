@@ -27,7 +27,8 @@ public class GPSStartedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
-        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED")) {
+        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED") ||
+                intent.getAction().matches("assignment2.android.hua.gr.android_er2.GPS_ALARM")){
             NetworkHelper helper = new NetworkHelper(context);
 
             if (helper.isGpsAvailable()) {
@@ -42,12 +43,15 @@ public class GPSStartedReceiver extends BroadcastReceiver {
                     public void run() {
                         AlarmManager service = (AlarmManager) context
                                 .getSystemService(Context.ALARM_SERVICE);
-                        Intent i = new Intent(context, AlarmReceiver.class);
+                        Intent i = new Intent(context, GPSStartedReceiver.class);
+                        i.setAction("assignment2.android.hua.gr.android_er2.GPS_ALARM");
                         PendingIntent pending = PendingIntent.getBroadcast(context, 0, i,
                                 PendingIntent.FLAG_CANCEL_CURRENT);
                         Calendar cal = Calendar.getInstance();
-                        // Start 30 seconds after boot completed
-                        cal.add(Calendar.SECOND, 30);
+
+                        Intent intent = new Intent(context, GPSTracker.class);
+                        context.startService(intent);
+
                         // Fetch every 30 seconds
                         service.setInexactRepeating(AlarmManager.RTC_WAKEUP,
                                 cal.getTimeInMillis(), REPEAT_TIME, pending);

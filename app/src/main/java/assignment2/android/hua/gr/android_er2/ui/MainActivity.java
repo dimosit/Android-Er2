@@ -24,7 +24,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         isFirst();
         setContentView(R.layout.activity_main);
-        findViewById(R.id.showLocations).setBackgroundResource(android.R.drawable.btn_default);
         this.registerReceiver(receiver,
                 new IntentFilter("android.location.PROVIDERS_CHANGED"));
         intent = new Intent();

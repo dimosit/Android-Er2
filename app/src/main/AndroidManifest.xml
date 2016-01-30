@@ -49,6 +49,9 @@
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="assignment2.android.hua.gr.android_er2.GPS_ALARM" />
+            </intent-filter>
         </receiver>
 
         <activity android:name=".ui.FirstActivity" />
@@ -88,11 +91,6 @@
                 android:value="assignment2.android.hua.gr.android_er2.ui.LocationsActivity" />
         </activity>
 
-        <receiver
-            android:name=".broadcastReceivers.AlarmReceiver"
-            android:enabled="true"
-            android:exported="true">
-        </receiver>
     </application>
 
 </manifest>
