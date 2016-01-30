@@ -81,9 +81,9 @@ public class NetworkHelper {
         // Settings button
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
-                ComponentName cName = new ComponentName("com.android.phone","com.android.phone.Settings");
-                intent.setComponent(cName);
+                Intent intent = new Intent();
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
                 context.startActivity(intent);
             }
         });
