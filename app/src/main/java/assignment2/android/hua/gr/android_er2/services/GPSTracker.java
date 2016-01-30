@@ -33,7 +33,7 @@ public class GPSTracker extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 30; // 30 seconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 20; // 30 seconds
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
@@ -51,8 +51,8 @@ public class GPSTracker extends Service implements LocationListener {
     }
 
     private String locationToString(){
-        return String.valueOf(location.getLatitude())
-                + "," + String.valueOf(location.getLongitude());
+        return String.valueOf(latitude)
+                + "," + String.valueOf(longitude);
     }
 
     public void getLocation() {
