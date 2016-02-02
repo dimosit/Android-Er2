@@ -28,7 +28,7 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
 
     private Activity activity;
     private ListView listView;
-    private ProgressDialog dialog;
+    private final ProgressDialog dialog;
     private Context context;
     private ArrayList<User> userData;
     private String location;
@@ -37,13 +37,13 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
     /**
      * Constructor
      */
-    public DisplayLocations(Activity activity, Context context) {
+    public DisplayLocations(Activity activity, ListView listView, Context context) {
 
         this.activity = activity;
         this.context = context;
-        this.dialog = new ProgressDialog(context);
-        this.userData = new ArrayList<User>();
-        this.listView = (ListView) activity.findViewById(R.id.list);
+        this.dialog = new ProgressDialog(activity);
+        this.userData = new ArrayList<>();
+        this.listView = listView;
     }
 
     void fetchData() {
@@ -64,13 +64,16 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
     private void startRegistrationService() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int code = api.isGooglePlayServicesAvailable(activity);
+
         if (code == ConnectionResult.SUCCESS) {
             Intent i = new Intent(activity, MapsActivity.class);
             i.putExtra("location", location);
             activity.startActivity(i);
+
         } else if (api.isUserResolvableError(code) &&
                 api.showErrorDialogFragment(activity, code, REQUEST_GOOGLE_PLAY_SERVICES)) {
             Toast.makeText(activity, R.string.wrong_location, Toast.LENGTH_LONG).show();
+
         } else {
             String str = GoogleApiAvailability.getInstance().getErrorString(code);
             Toast.makeText(activity, str, Toast.LENGTH_LONG).show();
@@ -79,9 +82,13 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
+        super.onPreExecute();
+
         dialog.setMessage(context.getResources().getString(R.string.loading_array));
+        dialog.setIndeterminate(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         //show dialog in main activity
+        dialog.setCancelable(true);
         dialog.show();
     }
 
@@ -117,7 +124,10 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
             AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView parent, View v, int position, long id) {
                     location = positions.get(position);
-                    showOnMap();
+                    if (location == null || location.equals(""))
+                        Toast.makeText(context, R.string.no_location, Toast.LENGTH_LONG).show();
+                    else
+                        showOnMap();
                 }
             };
 

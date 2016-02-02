@@ -1,5 +1,6 @@
 package assignment2.android.hua.gr.android_er2.ui;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,18 +13,25 @@ import android.view.View;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.broadcastReceivers.GPSStartedReceiver;
+import assignment2.android.hua.gr.android_er2.services.GPSTracker;
+import assignment2.android.hua.gr.android_er2.services.GetDataFromServer;
 
 public class MainActivity extends ActionBarActivity {
 
     GPSStartedReceiver receiver = new GPSStartedReceiver();
-    Intent intent;
     boolean first;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         isFirst();
+
         setContentView(R.layout.activity_main);
+
+        Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
+        startService(intent);
+
         this.registerReceiver(receiver,
                 new IntentFilter("android.location.PROVIDERS_CHANGED"));
         intent = new Intent();
@@ -51,6 +59,46 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onBackPressed() {
         // Do nothing
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+
+        for (ActivityManager.RunningServiceInfo service
+                : manager.getRunningServices(Integer.MAX_VALUE)) {
+
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onPause() {
+        if (!isMyServiceRunning(GetDataFromServer.class)) {
+            Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
+            startService(intent);
+        }
+
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy(){
+        unregisterReceiver(receiver);
+
+        if (isMyServiceRunning(GPSTracker.class)) {
+            Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
+            stopService(intent);
+        }
+
+        if (!isMyServiceRunning(GetDataFromServer.class)) {
+            Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
+            startService(intent);
+        }
+
+        super.onDestroy();
     }
 
     @Override

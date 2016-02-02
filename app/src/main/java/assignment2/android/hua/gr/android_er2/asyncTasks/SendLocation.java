@@ -39,33 +39,17 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
     int id;
     int status;
     Context context;
-    ProgressDialog dialog;
 
     public SendLocation(int id, String location, Context context){
         this.status = 0;
         this.id = id;
         this.location = location;
         this.context = context;
-        //this.dialog = new ProgressDialog(context);
-    }
-
-    // dismiss progress dialog
-    private void progressDialogDismiss() {
-        if (dialog.isShowing())
-            dialog.dismiss();
-    }
-
-    @Override
-    protected void onPreExecute() {
-        //dialog.setMessage(context.getResources().getString(R.string.posting_location));
-        //dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        //show dialog in main activity
-        //dialog.show();
     }
 
     @Override
     protected Void doInBackground(Void... voids) {
-        // Create a new HttpClient and Post Header
+        // Create a new HttpClient and URL
         HttpClient httpclient = new DefaultHttpClient();
         String url = "http://dit117-hua.tk?";
 
@@ -87,13 +71,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
             // Execute HTTP Get Request
             HttpResponse response = httpclient.execute(httpGet);
-            InputStream inputStream = response.getEntity().getContent();
-
-            // Convert Response's String to json object
-            JSONObject json = new JSONObject(inputStream.toString());
-            // get code json object
-            JSONObject json_code = json.getJSONObject("code");
-            if (Integer.getInteger(json_code.toString()) != 1)
+            if (response.getStatusLine().getStatusCode() != 200)
                 status = 1;
 
         } catch (ClientProtocolException e) {
@@ -102,16 +80,12 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
             status = 3;
         } catch (IOException e) {
             status = 4;
-        } catch (JSONException e) {
-            status = 5;
         }
         return null;
     }
 
     @Override
     protected void onPostExecute(Void v) {
-        //progressDialogDismiss();
-
         if (status != 0){
             Toast.makeText(context, R.string.posting_location_error, Toast.LENGTH_SHORT).show();
             return;

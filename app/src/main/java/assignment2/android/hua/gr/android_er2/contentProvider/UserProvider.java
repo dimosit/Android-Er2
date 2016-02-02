@@ -22,8 +22,8 @@ import assignment2.android.hua.gr.android_er2.database.DbHelper;
  */
 public class UserProvider extends ContentProvider {
 
-    static final String PROVIDER_NAME =
-            "assignment2.android.hua.gr.android_er2.contentProviders.UserProvider";
+    private static final String PROVIDER_NAME =
+            "assignment2.android.hua.gr.android_er2.contentProvider.UserProvider";
     static final String URL = "content://" + PROVIDER_NAME + "/" + DbHelper.DATABASE_TABLE;
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
@@ -41,14 +41,6 @@ public class UserProvider extends ContentProvider {
     }
 
     private SQLiteDatabase db;
-
-    // Empty constructor
-    public UserProvider() {}
-
-    // Constructor
-    public UserProvider(SQLiteDatabase db) {
-        this.db = db;
-    }
 
     private boolean open() {
         Context context = getContext();
@@ -98,7 +90,7 @@ public class UserProvider extends ContentProvider {
                         String[] selectionArgs, String sortOrder) {
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables("users");
+        qb.setTables(DbHelper.DATABASE_TABLE);
 
         switch (uriMatcher.match(uri)) {
 
@@ -112,10 +104,9 @@ public class UserProvider extends ContentProvider {
 
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
-
         }
 
-        if (sortOrder.isEmpty()) {
+        if (sortOrder == null || sortOrder.isEmpty()) {
             /**
              * sort on location id
              */
@@ -129,6 +120,37 @@ public class UserProvider extends ContentProvider {
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
 
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        int uriType;
+        int insertCount = 0;
+        Uri newUri;
+
+        uriType = uriMatcher.match(uri);
+
+        switch (uriType) {
+            case USERS:
+
+                db.beginTransaction();
+
+                for (ContentValues value : values) {
+                    long id = db.insert(DbHelper.DATABASE_TABLE, null, value);
+
+                    if (id > 0){
+                        newUri = ContentUris.withAppendedId(CONTENT_URI, id);
+                        getContext().getContentResolver().notifyChange(newUri, null);
+                    }
+                    insertCount++;
+                }
+
+                db.setTransactionSuccessful();
+                db.endTransaction();
+                break;
+        }
+        return insertCount;
     }
 
     @Nullable

@@ -19,23 +19,22 @@ public class DbHelper extends SQLiteOpenHelper {
     //Database columns
     public static final String USEID = "_USEID";
     public static final String USERNAME = "_USERNAME";
-    public  static final String CURRENT_LOCATION = "_CURRENT_LOATION";
+    public  static final String CURRENT_LOCATION = "_CURRENT_LOCATION";
 
     //Create the database
     private static final String DATABASE_CREATE =
-            "CREATE TABLE IF NOT EXISTS " + DATABASE_TABLE +
-                    "(" + USEID + "INTEGER PRIMARY KEY,"
-                    + USERNAME + "TEXT NOT NULL,"
-                    + CURRENT_LOCATION + "TEXT" + ");";
+            "CREATE TABLE " + DATABASE_TABLE +
+                    "(" + USEID + " INTEGER PRIMARY KEY,"
+                    + USERNAME + " TEXT NOT NULL,"
+                    + CURRENT_LOCATION + " TEXT" + ");";
 
     public DbHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
     public DbHelper(Context context) {
-        super(context,DATABASE_NAME,null,DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {

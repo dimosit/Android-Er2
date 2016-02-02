@@ -52,7 +52,7 @@ public class Register extends AsyncTask<Void, Void, Void> {
     // convert inputstream to String
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
+        String line;
         String result = "";
 
         while((line = bufferedReader.readLine()) != null)
@@ -102,13 +102,6 @@ public class Register extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    public void insertUser() {
-        DataManagement dataManagement = new DataManagement(context);
-
-        if (!dataManagement.insertUserToDB(user))
-            status = 4;
-    }
-
     // dismiss progress dialog
     private void progressDialogDismiss() {
         if (dialog.isShowing())
@@ -126,8 +119,6 @@ public class Register extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         postData();
-        if (status == 0)
-            insertUser();
         return null;
     }
 
@@ -139,7 +130,6 @@ public class Register extends AsyncTask<Void, Void, Void> {
             Toast.makeText(context, R.string.registration_error, Toast.LENGTH_SHORT).show();
             return;
         }
-
 
         // Save our id in order to post to the server our location later
         SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);

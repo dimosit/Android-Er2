@@ -33,13 +33,15 @@
     <string name="title_activity_locations">LocationsActivity</string>
     <string name="empty_array">No user locations exist!</string>
     <string name="table_titles">NICKNAME</string>
-    <string name="choose_name">Choose a name to see his last location on the map</string>
+    <string name="choose_name">Choose a username to see his last location on the map</string>
     <string name="title_activity_maps">Map</string>
-    <string name="wrong_location">Something went wrong \
-        while trying to find this location on the map!</string>
+    <string name="wrong_location">Please install or update google services on your mobile!</string>
     <string name="cannot_establish_Internet">Cannot establish Network connection!</string>
     <string name="Internet_settings_message"> Internet  is not enabled.\
         Do you want to go to the settings menu?</string>
     <string name="info">In this application, 5 seconds after you enable your GPS,\
         your location will start being tracked and saved every 30 seconds!</string>
+    <string name="data_error">Oops!\
+        There was an error while trying to save other users\' location data on your mobile!</string>
+    <string name="no_location">This user has no location saved yet!</string>
 </resources>

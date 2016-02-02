@@ -4,7 +4,7 @@ package assignment2.android.hua.gr.android_er2.model;
  * Created by d1 on 21/1/2016.
  */
 public class User {
-
+    //commit test
     private int  useid;
     private String username;
     private String current_location;

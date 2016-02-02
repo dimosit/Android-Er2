@@ -1,7 +1,10 @@
 package assignment2.android.hua.gr.android_er2.services;
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,11 +12,15 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 
+import java.util.Calendar;
+
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.asyncTasks.SendLocation;
+import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 
 /**
  * Created by d1 on 21/1/2016.
@@ -33,21 +40,30 @@ public class GPSTracker extends Service implements LocationListener {
     double longitude; // longitude
 
     // The minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 20; // 30 seconds
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 25; // 25 seconds
+    // Send location every 30 seconds
+    private static final long REPEAT_TIME = 1000 * 30;
 
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
     @Override
     public void onCreate() {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            public void run() {
+                getLocation();
+                SharedPreferences userDetails =
+                        getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+                int id = userDetails.getInt("MyId", 0);
+
+                String locationString = locationToString();
+
+                new SendLocation(id, locationString, getApplicationContext()).execute();
+                handler.postDelayed(this, REPEAT_TIME);
+            }
+        }, 0);
         getLocation();
-        SharedPreferences userDetails =
-                getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
-        int id = userDetails.getInt("MyId", 0);
-
-        String locationString = locationToString();
-
-        new SendLocation(id, locationString, getApplicationContext()).execute();
     }
 
     private String locationToString(){
@@ -191,22 +207,16 @@ public class GPSTracker extends Service implements LocationListener {
         alertDialog.show();
     }
 
-    /**
-     * Edw mporoume na kaloume to deutero service kathe fora pou teleiwnei to prwto.
-     */
-    @Override
-    public void onDestroy (){
-        Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
-        startActivity(intent);
-        super.onDestroy();
-    }
-
     @Override
     public void onLocationChanged(Location location) {
+        // update location
+        locationManager.removeUpdates(this); // remove this listener
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        NetworkHelper networkHelper = new NetworkHelper(getApplicationContext());
+        networkHelper.isGpsAvailable();
     }
 
     @Override

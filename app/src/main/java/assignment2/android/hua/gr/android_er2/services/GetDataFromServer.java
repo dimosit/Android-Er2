@@ -33,6 +33,7 @@ import java.util.List;
 
 import assignment2.android.hua.gr.android_er2.asyncTasks.GetAllData;
 import assignment2.android.hua.gr.android_er2.model.User;
+import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 import assignment2.android.hua.gr.android_er2.ui.MainActivity;
 
 /**
@@ -49,6 +50,8 @@ public class GetDataFromServer extends Service {
 
     @Override
     public void onCreate() {
-        new GetAllData(getApplicationContext()).execute();
+        NetworkHelper networkHelper = new NetworkHelper(this);
+        if (networkHelper.isNetworkAvailable())
+            new GetAllData(GetDataFromServer.this).execute();
     }
 }

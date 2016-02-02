@@ -84,10 +84,13 @@ public class NetworkHelper {
             public void onClick(DialogInterface dialog, int which) {
 
                 int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+
                 if (currentapiVersion < Build.VERSION_CODES.JELLY_BEAN) {
                     Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
                     ComponentName cName = new ComponentName("com.android.phone", "com.android.phone.Settings");
                     intent.setComponent(cName);
+                    context.startActivity(intent);
+
                 } else {
                     Intent intent = new Intent();
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
