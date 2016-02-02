@@ -51,10 +51,6 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-    public void showLocations(View v){
-        Intent i = new Intent(this, LocationsActivity.class);
-        startActivity(i);
-    }
 
     @Override
     public void onBackPressed() {
