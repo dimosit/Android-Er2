@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import assignment2.android.hua.gr.android_er2.R;
-import assignment2.android.hua.gr.android_er2.database.DataManagement;
 import assignment2.android.hua.gr.android_er2.model.User;
 import assignment2.android.hua.gr.android_er2.ui.MainActivity;
 
@@ -50,12 +49,12 @@ public class Register extends AsyncTask<Void, Void, Void> {
     }
 
     // convert inputstream to String
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line;
         String result = "";
 
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();

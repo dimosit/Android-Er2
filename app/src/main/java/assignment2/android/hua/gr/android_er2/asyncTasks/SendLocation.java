@@ -1,9 +1,7 @@
 package assignment2.android.hua.gr.android_er2.asyncTasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -11,20 +9,13 @@ import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.HttpParams;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +31,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
     int status;
     Context context;
 
-    public SendLocation(int id, String location, Context context){
+    public SendLocation(int id, String location, Context context) {
         this.status = 0;
         this.id = id;
         this.location = location;
@@ -86,7 +77,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-        if (status != 0){
+        if (status != 0) {
             Toast.makeText(context, R.string.posting_location_error, Toast.LENGTH_SHORT).show();
             return;
         }

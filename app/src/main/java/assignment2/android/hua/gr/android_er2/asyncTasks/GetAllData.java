@@ -1,6 +1,5 @@
 package assignment2.android.hua.gr.android_er2.asyncTasks;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.database.DataManagement;
@@ -34,18 +32,18 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
     Context context;
     int status;
 
-    public GetAllData(Context context){
+    public GetAllData(Context context) {
         this.context = context;
         this.status = 0;
     }
 
     // convert inputstream to String
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
         String result = "";
 
-        while((line = bufferedReader.readLine()) != null)
+        while ((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();
@@ -64,9 +62,9 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
             InputStream inputStream = response.getEntity().getContent();
             JSONObject json = new JSONObject(convertInputStreamToString(inputStream));
             // get data json object
-            JSONArray leaders= json.getJSONArray("data");
+            JSONArray leaders = json.getJSONArray("data");
 
-            for(int i = 0; i < leaders.length(); i++) {
+            for (int i = 0; i < leaders.length(); i++) {
                 JSONObject jsonSingleDataRow = leaders.getJSONObject(i);
                 int useid = jsonSingleDataRow.getInt("useid");
                 String username = jsonSingleDataRow.getString("username");
@@ -89,7 +87,7 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
 
     void saveData() {
         DataManagement dm = new DataManagement(context);
-        if(!dm.insertAllUsersToDB(users))
+        if (!dm.insertAllUsersToDB(users))
             Toast.makeText(context, R.string.data_error, Toast.LENGTH_SHORT).show();
     }
 
@@ -102,7 +100,7 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void v) {
 
-        if (status != 0){
+        if (status != 0) {
             Toast.makeText(context, R.string.fetch_error, Toast.LENGTH_SHORT).show();
             return;
         }

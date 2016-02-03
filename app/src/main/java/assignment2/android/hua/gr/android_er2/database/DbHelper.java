@@ -12,14 +12,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     //Database info
-    public   static final String   DATABASE_NAME  = "hua_users";
-    public   static final String   DATABASE_TABLE = "users";
+    public static final String DATABASE_NAME = "hua_users";
+    public static final String DATABASE_TABLE = "users";
     private static final int DATABASE_VERSION = 1;
 
     //Database columns
     public static final String USEID = "_USEID";
     public static final String USERNAME = "_USERNAME";
-    public  static final String CURRENT_LOCATION = "_CURRENT_LOCATION";
+    public static final String CURRENT_LOCATION = "_CURRENT_LOCATION";
 
     //Create the database
     private static final String DATABASE_CREATE =
@@ -43,7 +43,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " +  DATABASE_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
         onCreate(db);
     }
 }

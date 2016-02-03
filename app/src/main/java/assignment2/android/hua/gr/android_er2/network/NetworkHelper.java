@@ -5,13 +5,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
-import android.widget.Toast;
 
 import assignment2.android.hua.gr.android_er2.R;
 
@@ -22,7 +20,7 @@ public class NetworkHelper {
 
     Context context;
 
-    public NetworkHelper(Context context){
+    public NetworkHelper(Context context) {
         this.context = context;
     }
 
@@ -33,12 +31,12 @@ public class NetworkHelper {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public boolean isGpsAvailable(){
+    public boolean isGpsAvailable() {
         boolean gps_check;
-        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         gps_check = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        if (!gps_check){
+        if (!gps_check) {
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
             // Setting Dialog Title

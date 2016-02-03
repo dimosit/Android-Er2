@@ -1,15 +1,10 @@
 package assignment2.android.hua.gr.android_er2.broadcastReceivers;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.os.Handler;
 import android.widget.Toast;
-
-import java.util.Calendar;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.network.NetworkHelper;

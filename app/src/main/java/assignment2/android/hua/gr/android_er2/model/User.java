@@ -5,7 +5,7 @@ package assignment2.android.hua.gr.android_er2.model;
  */
 public class User {
     //commit test
-    private int  useid;
+    private int useid;
     private String username;
     private String current_location;
 

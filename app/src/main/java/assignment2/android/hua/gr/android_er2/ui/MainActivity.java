@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.broadcastReceivers.GPSStartedReceiver;
@@ -40,12 +39,12 @@ public class MainActivity extends ActionBarActivity {
         sendBroadcast(intent);
     }
 
-    private void isFirst(){
+    private void isFirst() {
         SharedPreferences sharedPref = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         first = sharedPref.getBoolean
                 (getString(R.string.first_time_run), true);
 
-        if (first){
+        if (first) {
             Intent i = new Intent(this, FirstActivity.class);
             startActivity(i);
         }
@@ -81,7 +80,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onDestroy(){
+    public void onDestroy() {
         unregisterReceiver(receiver);
 
         if (isMyServiceRunning(GPSTracker.class)) {

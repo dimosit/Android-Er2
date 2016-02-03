@@ -1,10 +1,7 @@
 package assignment2.android.hua.gr.android_er2.services;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Service;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,8 +12,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
-
-import java.util.Calendar;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.asyncTasks.SendLocation;
@@ -66,7 +61,7 @@ public class GPSTracker extends Service implements LocationListener {
         getLocation();
     }
 
-    private String locationToString(){
+    private String locationToString() {
         return String.valueOf(latitude)
                 + "," + String.valueOf(longitude);
     }

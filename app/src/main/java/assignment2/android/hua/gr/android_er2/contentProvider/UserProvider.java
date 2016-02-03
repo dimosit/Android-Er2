@@ -139,7 +139,7 @@ public class UserProvider extends ContentProvider {
                 for (ContentValues value : values) {
                     long id = db.insert(DbHelper.DATABASE_TABLE, null, value);
 
-                    if (id > 0){
+                    if (id > 0) {
                         newUri = ContentUris.withAppendedId(CONTENT_URI, id);
                         getContext().getContentResolver().notifyChange(newUri, null);
                     }
