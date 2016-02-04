@@ -11,19 +11,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-
 import java.util.ArrayList;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.database.DataManagement;
 import assignment2.android.hua.gr.android_er2.model.User;
+import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 import assignment2.android.hua.gr.android_er2.ui.MapsActivity;
 
-/**
- * Created by Manos on 27/1/2016.
- */
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+
 public class DisplayLocations extends AsyncTask<Void, Void, Void> {
 
     private Activity activity;
@@ -57,10 +55,6 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
             dialog.dismiss();
     }
 
-    private void showOnMap() {
-        startRegistrationService();
-    }
-
     private void startRegistrationService() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int code = api.isGooglePlayServicesAvailable(activity);
@@ -72,6 +66,7 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
 
         } else if (api.isUserResolvableError(code) &&
                 api.showErrorDialogFragment(activity, code, REQUEST_GOOGLE_PLAY_SERVICES)) {
+
             Toast.makeText(activity, R.string.wrong_location, Toast.LENGTH_LONG).show();
 
         } else {
@@ -85,7 +80,6 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
         super.onPreExecute();
 
         dialog.setMessage(context.getResources().getString(R.string.loading_array));
-        dialog.setIndeterminate(false);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         //show dialog in main activity
         dialog.setCancelable(true);
@@ -125,9 +119,16 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
                 public void onItemClick(AdapterView parent, View v, int position, long id) {
                     location = positions.get(position);
                     if (location == null || location.equals(""))
-                        Toast.makeText(context, R.string.no_location, Toast.LENGTH_LONG).show();
-                    else
-                        showOnMap();
+                        Toast.makeText(context, R.string.no_location, Toast.LENGTH_SHORT).show();
+                    else {
+                        NetworkHelper networkHelper = new NetworkHelper(activity);
+                        if (networkHelper.isNetworkAvailable()) {
+                            Toast.makeText(activity, R.string.loading_map, Toast.LENGTH_SHORT).show();
+                            startRegistrationService();
+                        }
+                        else
+                            networkHelper.showSettingsAlert();
+                    }
                 }
             };
 

@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import assignment2.android.hua.gr.android_er2.contentProvider.UserProvider;
 import assignment2.android.hua.gr.android_er2.model.User;
 
-/**
- * Created by Manos on 27/1/2016.
- */
 public class DataManagement {
 
     Context context;
@@ -23,6 +20,9 @@ public class DataManagement {
     }
 
     public boolean insertAllUsersToDB(ArrayList<User> users) {
+        Uri uri = UserProvider.CONTENT_URI;
+        context.getContentResolver().delete(uri, null, null);
+
         if (!users.isEmpty()) {
             ContentValues[] valueList = new ContentValues[users.size()];
             int i = 0;

@@ -29,9 +29,6 @@ import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.model.User;
 import assignment2.android.hua.gr.android_er2.ui.MainActivity;
 
-/**
- * Created by Manos on 27/1/2016.
- */
 public class Register extends AsyncTask<Void, Void, Void> {
 
     private String name;
@@ -49,12 +46,12 @@ public class Register extends AsyncTask<Void, Void, Void> {
     }
 
     // convert inputstream to String
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line;
         String result = "";
 
-        while ((line = bufferedReader.readLine()) != null)
+        while((line = bufferedReader.readLine()) != null)
             result += line;
 
         inputStream.close();

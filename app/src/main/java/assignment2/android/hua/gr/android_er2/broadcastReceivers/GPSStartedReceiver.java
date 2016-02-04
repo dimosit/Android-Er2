@@ -8,23 +8,18 @@ import android.widget.Toast;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
+import assignment2.android.hua.gr.android_er2.services.CheckServices;
 import assignment2.android.hua.gr.android_er2.services.GPSTracker;
 
-/**
- * Created by Manos on 22/1/2016.
- */
 public class GPSStartedReceiver extends BroadcastReceiver {
 
     // Start service 5 seconds after GPS is enabled
     private static final long WAIT_TIME = 1000 * 5;
-    // Has been triggered
-    private boolean triggered = false;
 
     @Override
     public void onReceive(final Context context, final Intent intent) {
 
-        if (intent.getAction().matches("android.location.PROVIDERS_CHANGED") && !triggered) {
-            triggered = true;
+        if (intent.getAction().equals("android.location.PROVIDERS_CHANGED")) {
             NetworkHelper helper = new NetworkHelper(context);
 
             if (helper.isGpsAvailable()) {
@@ -42,6 +37,17 @@ public class GPSStartedReceiver extends BroadcastReceiver {
                     public void onTick(long millisUntilFinished) {
                     }
                 }.start();
+            }
+            else {
+                CheckServices checkServices = new CheckServices(context);
+
+                if (checkServices.isMyServiceRunning(GPSTracker.class)) {
+                    Toast.makeText(context,
+                            context.getResources().getString(R.string.stopped_tracking),
+                            Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(context, GPSTracker.class);
+                    context.stopService(i);
+                }
             }
         }
     }

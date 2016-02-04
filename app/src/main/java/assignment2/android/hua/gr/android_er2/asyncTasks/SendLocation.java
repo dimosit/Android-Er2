@@ -21,9 +21,6 @@ import java.util.List;
 
 import assignment2.android.hua.gr.android_er2.R;
 
-/**
- * Created by Manos on 27/1/2016.
- */
 public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     String location;
@@ -77,7 +74,7 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-        if (status != 0) {
+        if (status != 0){
             Toast.makeText(context, R.string.posting_location_error, Toast.LENGTH_SHORT).show();
             return;
         }

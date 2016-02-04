@@ -1,5 +1,6 @@
 package assignment2.android.hua.gr.android_er2.ui;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -13,14 +14,22 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import assignment2.android.hua.gr.android_er2.R;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
+        GoogleMap.OnMapLoadedCallback {
 
     String location;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        dialog = new ProgressDialog(this);
+        dialog.setMessage(getApplicationContext().getResources().getString(R.string.loading_location));
+        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        dialog.setCancelable(true);
+        dialog.show();
 
         Intent intent = getIntent();
         location = intent.getExtras().getString("location");
@@ -30,11 +39,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
+    // dismiss progress dialog
+    private void progressDialogDismiss() {
+        if (dialog.isShowing())
+            dialog.dismiss();
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -52,7 +66,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker and move the camera
         LatLng latLng = new LatLng(latitude, longitude);
+
         map.addMarker(new MarkerOptions().position(latLng).title("User's last location"));
-        map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+    }
+
+    @Override
+    public void onMapLoaded() {
+        progressDialogDismiss();
     }
 }

@@ -17,9 +17,6 @@ import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.asyncTasks.SendLocation;
 import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 
-/**
- * Created by d1 on 21/1/2016.
- */
 public class GPSTracker extends Service implements LocationListener {
     // flag for GPS status
     boolean isGPSEnabled = false;
@@ -42,23 +39,30 @@ public class GPSTracker extends Service implements LocationListener {
     // Declaring a Location Manager
     protected LocationManager locationManager;
 
+    final Handler handler = new Handler();
+    Thread thread;
+
+    private void trackLocation() {
+        getLocation();
+        SharedPreferences userDetails =
+                getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        int id = userDetails.getInt("MyId", 0);
+
+        String locationString = locationToString();
+
+        new SendLocation(id, locationString, getApplicationContext()).execute();
+    }
+
     @Override
     public void onCreate() {
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
+        trackLocation();
+
+        thread = new Thread(new Runnable() {
             public void run() {
-                getLocation();
-                SharedPreferences userDetails =
-                        getApplicationContext().getSharedPreferences("MyPrefs", MODE_PRIVATE);
-                int id = userDetails.getInt("MyId", 0);
-
-                String locationString = locationToString();
-
-                new SendLocation(id, locationString, getApplicationContext()).execute();
-                handler.postDelayed(this, REPEAT_TIME);
+                trackLocation();
             }
-        }, 0);
-        getLocation();
+        });
+        handler.postDelayed(thread, REPEAT_TIME);
     }
 
     private String locationToString() {
@@ -227,4 +231,8 @@ public class GPSTracker extends Service implements LocationListener {
         return null;
     }
 
+    @Override
+    public void onDestroy() {
+        handler.removeCallbacks(thread);
+    }
 }

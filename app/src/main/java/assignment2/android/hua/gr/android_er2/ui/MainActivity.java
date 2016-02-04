@@ -1,6 +1,5 @@
 package assignment2.android.hua.gr.android_er2.ui;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -9,14 +8,17 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import assignment2.android.hua.gr.android_er2.R;
 import assignment2.android.hua.gr.android_er2.broadcastReceivers.GPSStartedReceiver;
+import assignment2.android.hua.gr.android_er2.services.CheckServices;
 import assignment2.android.hua.gr.android_er2.services.GPSTracker;
 import assignment2.android.hua.gr.android_er2.services.GetDataFromServer;
 
 public class MainActivity extends ActionBarActivity {
 
+    CheckServices checkServices = new CheckServices(this);
     GPSStartedReceiver receiver = new GPSStartedReceiver();
     boolean first;
 
@@ -33,10 +35,6 @@ public class MainActivity extends ActionBarActivity {
 
         this.registerReceiver(receiver,
                 new IntentFilter("android.location.PROVIDERS_CHANGED"));
-        intent = new Intent();
-        intent.setAction
-                ("assignment2.android.hua.gr.android_er2.broadcastReceiver.GPSStartedReceiver");
-        sendBroadcast(intent);
     }
 
     private void isFirst() {
@@ -50,28 +48,19 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void showLocations(View v) {
+        Intent i = new Intent(this, LocationsActivity.class);
+        startActivity(i);
+    }
 
     @Override
     public void onBackPressed() {
         // Do nothing
     }
 
-    private boolean isMyServiceRunning(Class<?> serviceClass) {
-        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-
-        for (ActivityManager.RunningServiceInfo service
-                : manager.getRunningServices(Integer.MAX_VALUE)) {
-
-            if (serviceClass.getName().equals(service.service.getClassName())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public void onPause() {
-        if (!isMyServiceRunning(GetDataFromServer.class)) {
+        if (!checkServices.isMyServiceRunning(GetDataFromServer.class)) {
             Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
             startService(intent);
         }
@@ -83,12 +72,12 @@ public class MainActivity extends ActionBarActivity {
     public void onDestroy() {
         unregisterReceiver(receiver);
 
-        if (isMyServiceRunning(GPSTracker.class)) {
+        if (checkServices.isMyServiceRunning(GPSTracker.class)) {
             Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
             stopService(intent);
         }
 
-        if (!isMyServiceRunning(GetDataFromServer.class)) {
+        if (!checkServices.isMyServiceRunning(GetDataFromServer.class)) {
             Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
             startService(intent);
         }

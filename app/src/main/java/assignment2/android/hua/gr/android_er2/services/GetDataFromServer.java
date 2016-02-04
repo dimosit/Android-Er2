@@ -8,10 +8,6 @@ import android.support.annotation.Nullable;
 import assignment2.android.hua.gr.android_er2.asyncTasks.GetAllData;
 import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 
-/**
- * Created by d1 on 25/1/2016.
- */
-
 public class GetDataFromServer extends Service {
 
     @Nullable

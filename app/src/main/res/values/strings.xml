@@ -12,7 +12,8 @@
     <string name="cannot_establish_GPS">Cannot establish GPS connection!</string>
     <string name="GPS_settings_message">
         GPS is not enabled.Do you want to go to the settings menu?</string>
-    <string name="starting_in_5">Starting to track your position in 5 seconds!</string>
+    <string name="starting_in_5">Starting to track your location in 5 seconds!</string>
+    <string name="stopped_tracking">Your location has stopped being tracked!</string>
     <string name="thread_interrupted">
         Starting to track your position earlier than expected!</string>
     <string name="service_started">The service has started!</string>
@@ -44,4 +45,6 @@
     <string name="data_error">Oops!\
         There was an error while trying to save other users\' location data on your mobile!</string>
     <string name="no_location">This user has no location saved yet!</string>
+    <string name="loading_location">Loading location on Google maps&#8230;</string>
+    <string name="loading_map">Loading Google maps&#8230;</string>
 </resources>

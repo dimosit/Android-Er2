@@ -17,9 +17,6 @@ import java.util.HashMap;
 
 import assignment2.android.hua.gr.android_er2.database.DbHelper;
 
-/**
- * Created by d1 on 21/1/2016.
- */
 public class UserProvider extends ContentProvider {
 
     private static final String PROVIDER_NAME =
@@ -139,7 +136,7 @@ public class UserProvider extends ContentProvider {
                 for (ContentValues value : values) {
                     long id = db.insert(DbHelper.DATABASE_TABLE, null, value);
 
-                    if (id > 0) {
+                    if (id > 0){
                         newUri = ContentUris.withAppendedId(CONTENT_URI, id);
                         getContext().getContentResolver().notifyChange(newUri, null);
                     }
@@ -161,7 +158,16 @@ public class UserProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        int uriType = uriMatcher.match(uri);
+        int count = 0;
+
+        switch (uriType) {
+            case USERS:
+                count = db.delete(DbHelper.DATABASE_TABLE, selection, selectionArgs);
+                break;
+        }
+
+        return count;
     }
 
     @Override

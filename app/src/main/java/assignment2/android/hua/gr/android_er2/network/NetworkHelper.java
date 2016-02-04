@@ -13,14 +13,11 @@ import android.provider.Settings;
 
 import assignment2.android.hua.gr.android_er2.R;
 
-/**
- * Created by Manos on 29/1/2016.
- */
 public class NetworkHelper {
 
     Context context;
 
-    public NetworkHelper(Context context) {
+    public NetworkHelper(Context context){
         this.context = context;
     }
 
@@ -32,39 +29,36 @@ public class NetworkHelper {
     }
 
     public boolean isGpsAvailable() {
-        boolean gps_check;
-        LocationManager lm = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        gps_check = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+    }
 
-        if (!gps_check) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+    public void showGPSAlert(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
-            // Setting Dialog Title
-            alertDialog.setTitle(context.getResources().getString(R.string.cannot_establish_GPS));
+        // Setting Dialog Title
+        alertDialog.setTitle(context.getResources().getString(R.string.cannot_establish_GPS));
 
-            // Setting Dialog Message
-            alertDialog.setMessage(context.getResources().getString(R.string.GPS_settings_message));
+        // Setting Dialog Message
+        alertDialog.setMessage(context.getResources().getString(R.string.GPS_settings_message));
 
-            // Settings button
-            alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                    context.startActivity(intent);
-                }
-            });
+        // Settings button
+        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                context.startActivity(intent);
+            }
+        });
 
-            // Cancel button
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
+        // Cancel button
+        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
 
-            // Showing Alert Message
-            alertDialog.show();
-        }
-
-        return gps_check;
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     // Shows network settings to the user
@@ -81,11 +75,12 @@ public class NetworkHelper {
         alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 
-                if (currentapiVersion < Build.VERSION_CODES.JELLY_BEAN) {
+                if (currentApiVersion < Build.VERSION_CODES.JELLY_BEAN) {
                     Intent intent = new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);
-                    ComponentName cName = new ComponentName("com.android.phone", "com.android.phone.Settings");
+                    ComponentName cName = new ComponentName("com.android.phone",
+                            "com.android.phone.Settings");
                     intent.setComponent(cName);
                     context.startActivity(intent);
 
@@ -95,7 +90,6 @@ public class NetworkHelper {
                     intent.setAction(android.provider.Settings.ACTION_DATA_ROAMING_SETTINGS);
                     context.startActivity(intent);
                 }
-
             }
         });
 
