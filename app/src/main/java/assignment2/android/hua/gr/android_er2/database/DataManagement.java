@@ -15,14 +15,30 @@ public class DataManagement {
 
     Context context;
 
+    /**
+     * DataManagement Constructor
+     * @param context the context
+     */
     public DataManagement(Context context) {
         this.context = context;
     }
 
-    public boolean insertAllUsersToDB(ArrayList<User> users) {
+    /**
+     * Deletes all the users from the mobile's DB.
+     * @return the number of the users deleted
+     */
+    public int deleteAllUsersFromDB() {
         Uri uri = UserProvider.CONTENT_URI;
-        context.getContentResolver().delete(uri, null, null);
+        return context.getContentResolver().delete(uri, null, null);
+    }
 
+    /**
+     * Inserts users to the mobile's DB.
+     * @param users the users to insert
+     * @return if the users where inserted successfully
+     */
+    public boolean insertUsersToDB(ArrayList<User> users) {
+        // If there are users, insert them to the mobile's DB
         if (!users.isEmpty()) {
             ContentValues[] valueList = new ContentValues[users.size()];
             int i = 0;
@@ -45,7 +61,10 @@ public class DataManagement {
         return true;
     }
 
-
+    /**
+     * Returns an ArrayList containing all the users of the mobile's DB
+     * @return all the users
+     */
     public ArrayList<User> getAllUsersFromDB() {
         Uri uri = UserProvider.CONTENT_URI;
 

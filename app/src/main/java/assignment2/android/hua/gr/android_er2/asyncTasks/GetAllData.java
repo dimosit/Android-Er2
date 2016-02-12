@@ -13,55 +13,54 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import assignment2.android.hua.gr.android_er2.R;
+import assignment2.android.hua.gr.android_er2.converter.InputStreamConverter;
 import assignment2.android.hua.gr.android_er2.database.DataManagement;
 import assignment2.android.hua.gr.android_er2.model.User;
 
 public class GetAllData extends AsyncTask<Void, Void, Void> {
 
-    ArrayList<User> users = new ArrayList<>();
-    Context context;
-    int status;
+    private ArrayList<User> users = new ArrayList<>();
+    private Context context;
+    private int status;
 
-    public GetAllData(Context context){
+    /**
+     * GetAllData Constructor
+     *
+     * @param context the context
+     */
+    public GetAllData(Context context) {
         this.context = context;
         this.status = 0;
     }
 
-    // convert inputstream to String
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line = "";
-        String result = "";
-
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-
-        return result;
-    }
-
+    /**
+     * Gets all the Users Data from the RESTful Web Service into JSON format,
+     * parses them and adds the results into an ArrayList
+     */
     void getData() {
-        // Create a new HttpClient and Post Header
+        // Create a new HttpClient and Get Header
         HttpClient httpclient = new DefaultHttpClient();
         HttpGet httpGet = new HttpGet("http://dit117-hua.tk");
 
         try {
-            // Execute HTTP Get Request
+            // Execute HTTP Get Request and get the response
             HttpResponse response = httpclient.execute(httpGet);
+            // Create an Input Stream from the response
             InputStream inputStream = response.getEntity().getContent();
-            JSONObject json = new JSONObject(convertInputStreamToString(inputStream));
-            // get data json object
-            JSONArray leaders= json.getJSONArray("data");
+            // Instantiate an Input Stream Converter
+            InputStreamConverter converter = new InputStreamConverter();
+            // Create a JSON object from the response
+            JSONObject json = new JSONObject(converter.convertInputStreamToString(inputStream));
+            // Get "data" json object
+            JSONArray leaders = json.getJSONArray("data");
 
-            for(int i = 0; i < leaders.length(); i++) {
+            // Add every User's Data into the ArrayList
+            for (int i = 0; i < leaders.length(); i++) {
                 JSONObject jsonSingleDataRow = leaders.getJSONObject(i);
                 int useid = jsonSingleDataRow.getInt("useid");
                 String username = jsonSingleDataRow.getString("username");
@@ -82,9 +81,14 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    /**
+     * Inserts every User's Data into the phone's DB
+     */
     void saveData() {
         DataManagement dm = new DataManagement(context);
-        if(!dm.insertAllUsersToDB(users))
+        dm.deleteAllUsersFromDB();
+
+        if (!dm.insertUsersToDB(users))
             Toast.makeText(context, R.string.data_error, Toast.LENGTH_SHORT).show();
     }
 
@@ -96,12 +100,11 @@ public class GetAllData extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-
-        if (status != 0){
+        // If something went wrong, display proper toast message
+        if (status != 0)
             Toast.makeText(context, R.string.fetch_error, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        saveData();
+            // Otherwise, save the Data
+        else
+            saveData();
     }
 }

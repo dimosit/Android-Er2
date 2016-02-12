@@ -17,14 +17,15 @@ import assignment2.android.hua.gr.android_er2.R;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback,
         GoogleMap.OnMapLoadedCallback {
 
-    String location;
-    ProgressDialog dialog;
+    private String location;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        // Prepare and show a progress dialog
         dialog = new ProgressDialog(this);
         dialog.setMessage(getApplicationContext().getResources().getString(R.string.loading_location));
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -32,6 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialog.show();
 
         Intent intent = getIntent();
+        // Get the location to display on map
         location = intent.getExtras().getString("location");
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -39,7 +41,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
     }
 
-    // dismiss progress dialog
+    // Dismiss progress dialog
     private void progressDialogDismiss() {
         if (dialog.isShowing())
             dialog.dismiss();
@@ -55,24 +57,28 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        GoogleMap map;
-        map = googleMap;
+        //GoogleMap map;
+        //map = googleMap;
 
+        // Parse the location string
         String delimiter = "[,]";
         String[] tokens = location.split(delimiter);
 
+        // Get latitude and longitude from the split location String
         double latitude = Double.parseDouble(tokens[0]);
         double longitude = Double.parseDouble(tokens[1]);
 
-        // Add a marker and move the camera
+        // Create a new latLong from the location
         LatLng latLng = new LatLng(latitude, longitude);
 
-        map.addMarker(new MarkerOptions().position(latLng).title("User's last location"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        // Add a marker and zoom the camera to the location
+        googleMap.addMarker(new MarkerOptions().position(latLng).title("User's last location"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
     }
 
     @Override
     public void onMapLoaded() {
+        // Dismiss the progress dialog
         progressDialogDismiss();
     }
 }

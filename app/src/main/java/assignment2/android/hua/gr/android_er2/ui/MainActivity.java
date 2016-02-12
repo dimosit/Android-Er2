@@ -18,9 +18,8 @@ import assignment2.android.hua.gr.android_er2.services.GetDataFromServer;
 
 public class MainActivity extends ActionBarActivity {
 
-    CheckServices checkServices = new CheckServices(this);
-    GPSStartedReceiver receiver = new GPSStartedReceiver();
-    boolean first;
+    private CheckServices checkServices = new CheckServices(this);
+    private GPSStartedReceiver receiver = new GPSStartedReceiver();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,14 +29,21 @@ public class MainActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_main);
 
+        // Get all the users data and save them to the mobile's DB
         Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
         startService(intent);
 
+        // Register a broadcast receiver which listens to GPS provider changes
         this.registerReceiver(receiver,
                 new IntentFilter("android.location.PROVIDERS_CHANGED"));
     }
 
+    /**
+     * If this app runs on a mobile phone for the first time after installation
+     * or its data have been deleted, starts an activity for registration
+     */
     private void isFirst() {
+        boolean first;
         SharedPreferences sharedPref = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         first = sharedPref.getBoolean
                 (getString(R.string.first_time_run), true);
@@ -48,6 +54,10 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    /**
+     * Starts an activity to show all the names of the users who are using this app in a list
+     * @param v the view
+     */
     public void showLocations(View v) {
         Intent i = new Intent(this, LocationsActivity.class);
         startActivity(i);
@@ -60,6 +70,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onPause() {
+        // Start service to get all the users data if it's not already running
         if (!checkServices.isMyServiceRunning(GetDataFromServer.class)) {
             Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
             startService(intent);
@@ -70,13 +81,16 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onDestroy() {
+        // Unregister the broadcast receiver
         unregisterReceiver(receiver);
 
+        // Stop location tracking service if it is running
         if (checkServices.isMyServiceRunning(GPSTracker.class)) {
             Intent intent = new Intent(getApplicationContext(), GPSTracker.class);
             stopService(intent);
         }
 
+        // Start service to get all the users data if it's not already running
         if (!checkServices.isMyServiceRunning(GetDataFromServer.class)) {
             Intent intent = new Intent(getApplicationContext(), GetDataFromServer.class);
             startService(intent);
@@ -106,5 +120,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-//    add test comment
 }

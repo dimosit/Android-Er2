@@ -18,30 +18,45 @@ import assignment2.android.hua.gr.android_er2.asyncTasks.SendLocation;
 import assignment2.android.hua.gr.android_er2.network.NetworkHelper;
 
 public class GPSTracker extends Service implements LocationListener {
-    // flag for GPS status
+    /**
+     * Flag for GPS status
+     */
     boolean isGPSEnabled = false;
 
-    // flag for network status
+    /**
+     * Flag for network status
+     */
     boolean isNetworkEnabled = false;
 
-    // flag for GPS status
+    /**
+     * Flag for capability of location tracking
+     */
     boolean canGetLocation = false;
 
-    Location location; // location
-    double latitude; // latitude
-    double longitude; // longitude
+    Location location;
+    double latitude;
+    double longitude;
 
-    // The minimum time between updates in milliseconds
+    /**
+     * The minimum time between updates in milliseconds
+     */
     private static final long MIN_TIME_BW_UPDATES = 1000 * 25; // 25 seconds
-    // Send location every 30 seconds
+    /**
+     * The repeating time of the location tracking
+     */
     private static final long REPEAT_TIME = 1000 * 30;
 
-    // Declaring a Location Manager
+    /**
+     * Location Manager
+     */
     protected LocationManager locationManager;
 
     final Handler handler = new Handler();
     Thread thread;
 
+    /**
+     * Gets last recorded location and tracks it
+     */
     private void trackLocation() {
         getLocation();
         SharedPreferences userDetails =
@@ -57,6 +72,7 @@ public class GPSTracker extends Service implements LocationListener {
     public void onCreate() {
         trackLocation();
 
+        // Track location again every 30 seconds
         thread = new Thread(new Runnable() {
             public void run() {
                 trackLocation();
@@ -70,15 +86,19 @@ public class GPSTracker extends Service implements LocationListener {
                 + "," + String.valueOf(longitude);
     }
 
+    /**
+     * Gets the user's location.<br>
+     * If neither network nor GPS is enabled, shows an alert dialog.
+     */
     public void getLocation() {
         try {
             locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-            // getting GPS status
+            // Getting GPS status
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-            // getting network status
+            // Getting network status
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
@@ -88,7 +108,7 @@ public class GPSTracker extends Service implements LocationListener {
             else {
                 this.canGetLocation = true;
 
-                // First get location from Network Provider
+                // First get location from the Network Provider
                 if (isNetworkEnabled) {
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
@@ -107,7 +127,7 @@ public class GPSTracker extends Service implements LocationListener {
                     }
                 }
 
-                // if GPS Enabled get lat/long using GPS Services
+                // If GPS is enabled get lat/long using GPS Services
                 if (isGPSEnabled) {
 
                     if (location == null) {
@@ -150,7 +170,6 @@ public class GPSTracker extends Service implements LocationListener {
         if (location != null)
             latitude = location.getLatitude();
 
-        // return latitude
         return latitude;
     }
 
@@ -161,7 +180,6 @@ public class GPSTracker extends Service implements LocationListener {
         if (location != null)
             longitude = location.getLongitude();
 
-        // return longitude
         return longitude;
     }
 
@@ -176,7 +194,7 @@ public class GPSTracker extends Service implements LocationListener {
 
     /**
      * Function to show settings alert dialog
-     * On pressing Settings button will lauch Settings Options
+     * On pressing Settings button will launch Settings Options
      */
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(getApplicationContext());
@@ -208,14 +226,15 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-        // update location
-        locationManager.removeUpdates(this); // remove this listener
+        // Remove this listener
+        locationManager.removeUpdates(this);
     }
 
     @Override
     public void onProviderDisabled(String provider) {
         NetworkHelper networkHelper = new NetworkHelper(getApplicationContext());
         networkHelper.isGpsAvailable();
+        networkHelper.showGPSAlert();
     }
 
     @Override

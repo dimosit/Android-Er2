@@ -18,15 +18,23 @@ public class FirstActivity extends ActionBarActivity {
         setContentView(R.layout.activity_first);
     }
 
+    /**
+     * When Register button is being pressed,
+     * user is being registered with his nickname
+     * @param v the view
+     */
     public void register(View v) {
         EditText editText = (EditText) findViewById(R.id.editText);
         String nickname = editText.getText().toString();
 
+        // If nickname is empty display proper message
         if (nickname.isEmpty())
             Toast.makeText(this, R.string.empty_name, Toast.LENGTH_SHORT).show();
         else {
             NetworkHelper networkHelper = new NetworkHelper(this);
-            if (networkHelper.isNetworkAvailable() && networkHelper.isGpsAvailable())
+
+            // If network is available, register the user
+            if (networkHelper.isNetworkAvailable())
                 new Register(nickname, this).execute();
             else
                 networkHelper.showSettingsAlert();

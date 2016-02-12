@@ -33,7 +33,11 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
     public static final int REQUEST_GOOGLE_PLAY_SERVICES = 1972;
 
     /**
-     * Constructor
+     * DisplayLocations Constructor
+     *
+     * @param activity the activity
+     * @param listView the listView
+     * @param context  the context
      */
     public DisplayLocations(Activity activity, ListView listView, Context context) {
 
@@ -44,23 +48,35 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
         this.listView = listView;
     }
 
+    /**
+     * Gets all the users data from the mobile's db
+     */
     void fetchData() {
         DataManagement dm = new DataManagement(context);
         userData = dm.getAllUsersFromDB();
     }
 
-    // dismiss progress dialog
+    /**
+     * Checks if the progress dialog is showing.<br>
+     * If yes, it dismisses it.
+     */
     private void progressDialogDismiss() {
         if (dialog.isShowing())
             dialog.dismiss();
     }
 
+    /**
+     * Checks if Google Api is available.<br>
+     * If yes, it starts MapActivity.<br>
+     * If not, it shows a toast message to the user.
+     */
     private void startRegistrationService() {
         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
         int code = api.isGooglePlayServicesAvailable(activity);
 
         if (code == ConnectionResult.SUCCESS) {
             Intent i = new Intent(activity, MapsActivity.class);
+            // Pass the location to the Maps activity
             i.putExtra("location", location);
             activity.startActivity(i);
 
@@ -79,9 +95,9 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
     protected void onPreExecute() {
         super.onPreExecute();
 
+        // Prepare and show a progress dialog
         dialog.setMessage(context.getResources().getString(R.string.loading_array));
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        //show dialog in main activity
         dialog.setCancelable(true);
         dialog.show();
     }
@@ -99,40 +115,48 @@ public class DisplayLocations extends AsyncTask<Void, Void, Void> {
         ArrayList<String> names = new ArrayList<>();
         final ArrayList<String> positions = new ArrayList<>();
 
+        // Get every user's name and position and add them in an ArrayList
         for (User u : userData) {
             names.add(u.getUsername());
             positions.add(u.getCurrent_location());
         }
 
+        // If there are no positions, display proper message
         if (positions.isEmpty())
             Toast.makeText(context, R.string.empty_array, Toast.LENGTH_LONG).show();
 
+            // Otherwise, fill the list
         else {
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
                     android.R.layout.simple_list_item_1, names);
 
-            // set the listView with the names
+            // Set the listView with the names
             listView.setAdapter(adapter);
 
+            // Create a Click Listener
             AdapterView.OnItemClickListener mMessageClickedHandler = new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView parent, View v, int position, long id) {
                     location = positions.get(position);
+
+                    // If the users doesn't have any location saved, display proper message
                     if (location == null || location.equals(""))
                         Toast.makeText(context, R.string.no_location, Toast.LENGTH_SHORT).show();
+
+                        // Otherwise, if Network is available,
+                        // prepare to show the user's location on Google Maps
                     else {
                         NetworkHelper networkHelper = new NetworkHelper(activity);
                         if (networkHelper.isNetworkAvailable()) {
                             Toast.makeText(activity, R.string.loading_map, Toast.LENGTH_SHORT).show();
                             startRegistrationService();
-                        }
-                        else
+                        } else
                             networkHelper.showSettingsAlert();
                     }
                 }
             };
 
-            // set items click listener from the listView with the descriptions
+            // Set click listener on the list's names
             listView.setOnItemClickListener(mMessageClickedHandler);
         }
     }

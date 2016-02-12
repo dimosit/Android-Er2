@@ -1,7 +1,6 @@
 package assignment2.android.hua.gr.android_er2.asyncTasks;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -23,11 +22,18 @@ import assignment2.android.hua.gr.android_er2.R;
 
 public class SendLocation extends AsyncTask<Void, Void, Void> {
 
-    String location;
-    int id;
-    int status;
-    Context context;
+    private String location;
+    private int id;
+    private int status;
+    private Context context;
 
+    /**
+     * SendLocation Constructor
+     *
+     * @param id       'our' id
+     * @param location 'our' location
+     * @param context  the context
+     */
     public SendLocation(int id, String location, Context context) {
         this.status = 0;
         this.id = id;
@@ -37,28 +43,26 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected Void doInBackground(Void... voids) {
-        // Create a new HttpClient and URL
+        // Create a new HttpClient and URL String
         HttpClient httpclient = new DefaultHttpClient();
         String url = "http://dit117-hua.tk?";
 
         try {
-            SharedPreferences sharedPref =
-                    context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-            int myId = sharedPref.getInt("MyId", 0);
-
-            // Adding data
+            // Create name value pairs for the method, the location and the useid
             List<NameValuePair> nameValuePairs = new ArrayList<>(3);
             nameValuePairs.add(new BasicNameValuePair("method", "newLocation"));
             nameValuePairs.add(new BasicNameValuePair("location", location));
-            nameValuePairs.add(new BasicNameValuePair("useid", String.valueOf(myId)));
+            nameValuePairs.add(new BasicNameValuePair("useid", String.valueOf(id)));
 
             String paramString = URLEncodedUtils.format(nameValuePairs, "utf-8");
             url += paramString;
 
             HttpGet httpGet = new HttpGet(url);
 
-            // Execute HTTP Get Request
+            // Execute HTTP Get Request and get the response
             HttpResponse response = httpclient.execute(httpGet);
+
+            // If the response status is not OK
             if (response.getStatusLine().getStatusCode() != 200)
                 status = 1;
 
@@ -74,11 +78,11 @@ public class SendLocation extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void v) {
-        if (status != 0){
+        // If something went wrong, display proper toast message
+        if (status != 0)
             Toast.makeText(context, R.string.posting_location_error, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        Toast.makeText(context, R.string.posting_location_success, Toast.LENGTH_SHORT).show();
+        else
+            // Otherwise, display success toast message
+            Toast.makeText(context, R.string.posting_location_success, Toast.LENGTH_SHORT).show();
     }
 }

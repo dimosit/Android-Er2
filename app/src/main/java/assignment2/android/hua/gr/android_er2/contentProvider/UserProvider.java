@@ -19,17 +19,29 @@ import assignment2.android.hua.gr.android_er2.database.DbHelper;
 
 public class UserProvider extends ContentProvider {
 
+    /**
+     * The content provider's name
+     */
     private static final String PROVIDER_NAME =
             "assignment2.android.hua.gr.android_er2.contentProvider.UserProvider";
-    static final String URL = "content://" + PROVIDER_NAME + "/" + DbHelper.DATABASE_TABLE;
+    /**
+     * The URL of the DB's "users" table
+     */
+    private static final String URL = "content://" + PROVIDER_NAME + "/" + DbHelper.DATABASE_TABLE;
+    /**
+     * The content URI of the DB's table "users"
+     */
     public static final Uri CONTENT_URI = Uri.parse(URL);
 
+    /**
+     * The users projection map
+     */
     private static HashMap<String, String> USERS_MAP;
 
-    static final int USERS = 1;
-    static final int USERS_ID = 2;
+    private static final int USERS = 1;
+    private static final int USERS_ID = 2;
 
-    static final UriMatcher uriMatcher;
+    private static final UriMatcher uriMatcher;
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -39,6 +51,10 @@ public class UserProvider extends ContentProvider {
 
     private SQLiteDatabase db;
 
+    /**
+     * Creates a new DbHelper and opens it
+     * @return if the database opened successfully
+     */
     private boolean open() {
         Context context = getContext();
         DbHelper dbHelper = new DbHelper(context);

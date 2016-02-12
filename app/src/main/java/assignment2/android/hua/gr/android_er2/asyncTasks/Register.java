@@ -18,14 +18,13 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
 import assignment2.android.hua.gr.android_er2.R;
+import assignment2.android.hua.gr.android_er2.converter.InputStreamConverter;
 import assignment2.android.hua.gr.android_er2.model.User;
 import assignment2.android.hua.gr.android_er2.ui.MainActivity;
 
@@ -34,9 +33,14 @@ public class Register extends AsyncTask<Void, Void, Void> {
     private String name;
     private ProgressDialog dialog;
     private Context context;
-    User user;
-    int status;
+    private User user;
+    private int status;
 
+    /**
+     * Register Constructor
+     * @param name the User's name
+     * @param context the context
+     */
     public Register(String name, Context context) {
         this.name = name;
         this.context = context;
@@ -45,27 +49,13 @@ public class Register extends AsyncTask<Void, Void, Void> {
         this.dialog = new ProgressDialog(context);
     }
 
-    // convert inputstream to String
-    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
-        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
-        String line;
-        String result = "";
-
-        while((line = bufferedReader.readLine()) != null)
-            result += line;
-
-        inputStream.close();
-
-        return result;
-    }
-
     public void postData() {
-        // Create a new HttpClient and Post Header
+        // Create a new HttpClient and a URL String
         HttpClient httpclient = new DefaultHttpClient();
         String url = "http://dit117-hua.tk?";
 
         try {
-            // Adding data
+            // Create name value pairs for the method and the username
             List<NameValuePair> nameValuePairs = new ArrayList<>(2);
             nameValuePairs.add(new BasicNameValuePair("method", "assignId"));
             nameValuePairs.add(new BasicNameValuePair("username", name));
@@ -75,15 +65,17 @@ public class Register extends AsyncTask<Void, Void, Void> {
 
             HttpGet httpGet = new HttpGet(url);
 
-            // Execute HTTP Get Request
+            // Execute HTTP Get Request and get the response
             HttpResponse response = httpclient.execute(httpGet);
+            // Create an Input Stream from the response
             InputStream inputStream = response.getEntity().getContent();
-
+            // Instantiate an Input Stream Converter
+            InputStreamConverter converter = new InputStreamConverter();
             // Convert Response Stream to json object
-            JSONObject json = new JSONObject(convertInputStreamToString(inputStream));
-            // get data json object
+            JSONObject json = new JSONObject(converter.convertInputStreamToString(inputStream));
+            // Get "data" json object
             JSONObject json_data = json.getJSONObject("data");
-            // get value from data Json Object
+            // Get "useid" from "data" Json Object
             String useid = json_data.getString("useid");
 
             user.setUseid(Integer.parseInt(useid));
@@ -98,7 +90,10 @@ public class Register extends AsyncTask<Void, Void, Void> {
         }
     }
 
-    // dismiss progress dialog
+    /**
+     * Checks if the progress dialog is showing.<br>
+     * If yes, it dismisses it.
+     */
     private void progressDialogDismiss() {
         if (dialog.isShowing())
             dialog.dismiss();
@@ -106,9 +101,9 @@ public class Register extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPreExecute() {
+        // Prepare and show a progress dialog
         dialog.setMessage(context.getResources().getString(R.string.registering_message));
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        //show dialog in main activity
         dialog.show();
     }
 
@@ -122,20 +117,24 @@ public class Register extends AsyncTask<Void, Void, Void> {
     protected void onPostExecute(Void v) {
         progressDialogDismiss();
 
-        if (status != 0) {
+        // If something went wrong, display proper toast message
+        if (status != 0)
             Toast.makeText(context, R.string.registration_error, Toast.LENGTH_SHORT).show();
-            return;
+
+        /* Otherwise, save 'our' id to the phone's shared preferences,
+           in order to post to the server our location later
+           and change the variable that shows if the app has run again to false
+           Show registration success message and continue with the Main Activity*/
+        else {
+            SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt("MyId", user.getUseid());
+            editor.putBoolean(context.getString(R.string.first_time_run), false);
+            editor.apply();
+
+            Toast.makeText(context, R.string.registration_success, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(context, MainActivity.class);
+            context.startActivity(intent);
         }
-
-        // Save our id in order to post to the server our location later
-        SharedPreferences sharedPref = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt("MyId", user.getUseid());
-        editor.putBoolean(context.getString(R.string.first_time_run), false);
-        editor.apply();
-
-        Toast.makeText(context, R.string.registration_success, Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(context, MainActivity.class);
-        context.startActivity(intent);
     }
 }

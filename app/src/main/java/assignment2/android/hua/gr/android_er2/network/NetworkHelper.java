@@ -17,10 +17,18 @@ public class NetworkHelper {
 
     Context context;
 
+    /**
+     * NetworkHelper Constructor
+     * @param context the context
+     */
     public NetworkHelper(Context context){
         this.context = context;
     }
 
+    /**
+     * Checks if network is available
+     * @return if network is available
+     */
     public boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -28,11 +36,18 @@ public class NetworkHelper {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    /**
+     * Checks if GPS is available
+     * @return if GPS is available
+     */
     public boolean isGpsAvailable() {
         LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
         return lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
     }
 
+    /**
+     * Shows Alert Dialog in order to get the user to the GPS settings
+     */
     public void showGPSAlert(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
@@ -61,7 +76,9 @@ public class NetworkHelper {
         alertDialog.show();
     }
 
-    // Shows network settings to the user
+    /**
+     * Shows Alert Dialog in order to get the user to the network settings
+     */
     public void showSettingsAlert() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
