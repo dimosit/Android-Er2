@@ -30,7 +30,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dialog.setMessage(getApplicationContext().getResources().getString(R.string.loading_location));
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         dialog.setCancelable(true);
-        dialog.show();
+        //dialog.show();
 
         Intent intent = getIntent();
         // Get the location to display on map
